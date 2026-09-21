@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Reem Al Khaleej Perfumes · Brand board</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Manrope:wght@300..700&display=swap" rel="stylesheet" />
+<style>
+  :root { --ink:#17110b; --ivory:#f4eee3; --brass:#b8842e; --gold:#dcaa55; --oud:#100c08; }
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: Manrope, system-ui, sans-serif; background: #e9e2d3; color: var(--ink); line-height: 1.55; }
+  main { max-width: 1180px; margin: 0 auto; padding: 56px 24px 96px; }
+  h1 { font-family: Fraunces, serif; font-weight: 340; font-size: clamp(2.2rem,5vw,3.6rem); letter-spacing: -.025em; line-height: 1.05; }
+  h1 em { font-style: italic; font-weight: 300; color: var(--brass); }
+  .lead { max-width: 46em; margin-top: 16px; color: #5b4f42; }
+  h2 { font-size: .72rem; letter-spacing: .22em; text-transform: uppercase; color: var(--brass); margin: 56px 0 16px; font-weight: 700; }
+  .grid { display: grid; gap: 16px; }
+  .g2 { grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); }
+  .tile { border-radius: 24px; display: grid; place-items: center; padding: 56px 24px; min-height: 260px; position: relative; }
+  .tile small { position: absolute; left: 20px; bottom: 14px; font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; opacity: .55; }
+  .on-ivory { background: var(--ivory); color: var(--ink); }
+  .on-dark { background: var(--oud); color: var(--ivory); }
+  .on-brass { background: linear-gradient(160deg,#e9c987,#b8842e); color: #17110b; }
+  .on-ink { background: var(--ink); color: var(--ivory); }
+
+  /* lockups */
+  .mark { --accent: var(--brass); --shine: var(--ivory); --shine-o: .85; }
+  .on-dark .mark, .on-ink .mark { --accent: var(--gold); --shine: var(--oud); --shine-o: .7; }
+  .on-brass .mark { --accent: #17110b; --shine: #e9c987; }
+
+  .h-lock { display: inline-flex; align-items: center; gap: 18px; }
+  .h-lock svg { width: 54px; height: 67px; }
+  .h-lock .t { display: flex; flex-direction: column; line-height: 1; }
+  .h-lock b { font-family: Fraunces, serif; font-weight: 420; font-size: 2.1rem; letter-spacing: -.015em; white-space: nowrap; }
+  .h-lock .p { display: flex; align-items: center; gap: 12px; margin-top: 12px; }
+  .h-lock .p span { font-size: .72rem; font-weight: 700; letter-spacing: .5em; text-transform: uppercase; color: var(--brass); margin-right: -.5em; }
+  .on-dark .h-lock .p span, .on-ink .h-lock .p span { color: var(--gold); }
+  .on-brass .h-lock .p span { color: #17110b; }
+  .h-lock .p i { flex: 1; min-width: 18px; height: 1px; background: currentColor; opacity: .3; }
+  .h-lock .p em { font-family: Amiri, serif; font-style: normal; font-size: 1.12rem; line-height: 1; opacity: .9; }
+
+  .s-lock { display: flex; flex-direction: column; align-items: center; text-align: center; }
+  .s-lock svg { width: 92px; height: 115px; margin-bottom: 22px; }
+  .s-lock b { font-family: Fraunces, serif; font-weight: 400; font-size: 2.3rem; letter-spacing: -.015em; line-height: 1; }
+  .s-lock .p { margin-top: 12px; font-size: .74rem; font-weight: 700; letter-spacing: .5em; margin-right: -.5em; text-transform: uppercase; color: var(--brass); }
+  .on-dark .s-lock .p, .on-ink .s-lock .p { color: var(--gold); }
+  .on-brass .s-lock .p { color: #17110b; }
+  .s-lock .ar { font-family: Amiri, serif; font-size: 1.2rem; margin-top: 14px; opacity: .85; }
+  .s-lock .rule { width: 44px; height: 1px; background: currentColor; opacity: .35; margin-top: 14px; }
+
+  .sizes { display: flex; align-items: flex-end; gap: 32px; flex-wrap: wrap; }
+  .sizes figure { display: flex; flex-direction: column; align-items: center; gap: 10px; font-size: .72rem; opacity: .9; }
+  .fav { border-radius: 22%; overflow: hidden; }
+
+  .swatches { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); gap: 12px; }
+  .sw { border-radius: 18px; padding: 18px 16px 14px; min-height: 130px; display: flex; flex-direction: column; justify-content: flex-end; font-size: .78rem; }
+  .sw b { font-size: .95rem; }
+  .notes { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: 16px; }
+  .note { background: #f4eee3; border-radius: 20px; padding: 24px; }
+  .note h3 { font-family: Fraunces, serif; font-weight: 400; font-size: 1.3rem; margin-bottom: 6px; }
+  .note p { color: #5b4f42; font-size: .92rem; }
+  .note svg { width: 30px; height: 30px; margin-bottom: 14px; color: var(--brass); }
+  .files a { color: var(--ink); }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="mark" viewBox="0 0 64 80" fill="none">
+      <path d="M4 76V33a28 28 0 0 1 56 0v43" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+      <path d="M11 76V34a21 21 0 0 1 42 0v42" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+      <path d="M0 76.5h64" stroke="currentColor" stroke-width="1"/>
+      <path style="fill:var(--accent)" d="M32 18.5l1.8 4.7 4.7 1.8-4.7 1.8L32 31.5l-1.8-4.7L25.5 25l4.7-1.8z"/>
+      <path style="fill:var(--accent)" d="M32 40S22 52.5 22 59.5a10 10 0 0 0 20 0C42 52.5 32 40 32 40z"/>
+      <path style="stroke:var(--shine);opacity:var(--shine-o,.85)" d="M27.5 58.5a4.6 4.6 0 0 0 2.6 4.4" stroke-width="1.3" stroke-linecap="round"/>
+    </symbol>
+  </defs>
+</svg>
+
+<main>
+  <h1>Reem Al Khaleej <em>Perfumes</em><br />brand board</h1>
+  <p class="lead">The mark joins three ideas: the <strong>arch</strong> of a Gulf doorway, a single <strong>drop</strong> of perfume, and a four-point <strong>star</strong> from the night sky over the desert. It is drawn with two strokes and two fills so it stays clear from a browser tab to a shopfront.</p>
+
+  <h2>Primary lockup</h2>
+  <div class="grid g2">
+    <div class="tile on-ivory"><div class="h-lock mark"><svg><use href="#mark"/></svg><div class="t"><b>Reem Al Khaleej</b><div class="p"><span>Perfumes</span><i></i><em lang="ar" dir="rtl">ريم الخليج للعطور</em></div></div></div><small>On ivory</small></div>
+    <div class="tile on-dark"><div class="h-lock mark"><svg><use href="#mark"/></svg><div class="t"><b>Reem Al Khaleej</b><div class="p"><span>Perfumes</span><i></i><em lang="ar" dir="rtl">ريم الخليج للعطور</em></div></div></div><small>On oud</small></div>
+  </div>
+
+  <h2>Stacked lockup</h2>
+  <div class="grid g2">
+    <div class="tile on-ivory" style="min-height:420px"><div class="s-lock mark"><svg><use href="#mark"/></svg><b>Reem Al Khaleej</b><div class="p">Perfumes</div><div class="rule"></div><div class="ar" lang="ar" dir="rtl">ريم الخليج للعطور</div></div><small>On ivory</small></div>
+    <div class="tile on-brass" style="min-height:420px"><div class="s-lock mark"><svg><use href="#mark"/></svg><b>Reem Al Khaleej</b><div class="p">Perfumes</div><div class="rule"></div><div class="ar" lang="ar" dir="rtl">ريم الخليج للعطور</div></div><small>On brass</small></div>
+  </div>
+
+  <h2>The mark and small sizes</h2>
+  <div class="grid g2">
+    <div class="tile on-ivory"><div class="sizes mark" style="align-items:flex-end">
+      <figure><svg width="120" height="150"><use href="#mark"/></svg>120</figure>
+      <figure><svg width="64" height="80"><use href="#mark"/></svg>64</figure>
+      <figure><svg width="32" height="40"><use href="#mark"/></svg>32</figure>
+      <figure><svg width="20" height="25"><use href="#mark"/></svg>20 (minimum)</figure>
+    </div><small>Mark only</small></div>
+    <div class="tile on-dark"><div class="sizes mark">
+      <figure><img class="fav" src="/favicon.svg" width="96" height="96" alt="">96</figure>
+      <figure><img class="fav" src="/favicon.svg" width="48" height="48" alt="">48</figure>
+      <figure><img class="fav" src="/favicon.svg" width="32" height="32" alt="">32</figure>
+      <figure><img class="fav" src="/favicon.svg" width="16" height="16" alt="">16 favicon</figure>
+    </div><small>App icon and favicon</small></div>
+  </div>
+
+  <h2>Colour</h2>
+  <div class="swatches">
+    <div class="sw" style="background:#17110b;color:#f4eee3"><b>Oud Ink</b>#17110B</div>
+    <div class="sw" style="background:#100c08;color:#f4eee3"><b>Night Oud</b>#100C08</div>
+    <div class="sw" style="background:#f4eee3"><b>Ivory</b>#F4EEE3</div>
+    <div class="sw" style="background:#b8842e;color:#17110b"><b>Brass</b>#B8842E · on light</div>
+    <div class="sw" style="background:#dcaa55;color:#17110b"><b>Gold</b>#DCAA55 · on dark</div>
+  </div>
+
+  <h2>Typography</h2>
+  <div class="notes">
+    <div class="note"><h3 style="font-size:2.2rem;line-height:1">Fraunces</h3><p>Wordmark and headlines. Soft, warm serif with a human hand.</p></div>
+    <div class="note"><h3 style="font-family:Manrope;font-weight:700;letter-spacing:.5em;font-size:1.1rem;text-transform:uppercase">Perfumes</h3><p>Manrope Bold, tracked wide, for the descriptor line.</p></div>
+    <div class="note"><h3 style="font-family:Amiri;font-size:2rem" dir="rtl">ريم الخليج للعطور</h3><p>Amiri for the Arabic name: a calligraphic naskh with classical proportions.</p></div>
+  </div>
+
+  <h2>Usage</h2>
+  <div class="notes">
+    <div class="note"><h3>Clear space</h3><p>Keep the width of the star clear on every side of the lockup.</p></div>
+    <div class="note"><h3>Minimum size</h3><p>Mark: 20 px wide. Horizontal lockup: 160 px wide. Below that, use the mark alone.</p></div>
+    <div class="note"><h3>Colour</h3><p>Brass on ivory, gold on oud. On brass or photography use the single-ink version.</p></div>
+  </div>
+
+  <h2>Files</h2>
+  <p class="files"><a href="/brand/reem-mark-dark.svg">reem-mark-dark.svg</a> (for light backgrounds) · <a href="/brand/reem-mark-light.svg">reem-mark-light.svg</a> (for dark backgrounds) · <a href="/favicon.svg">favicon.svg</a></p>
+</main>
+</body>
+</html>
