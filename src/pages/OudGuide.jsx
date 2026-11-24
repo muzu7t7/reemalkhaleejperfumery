@@ -3,6 +3,7 @@ import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import { NAMES, PROCESS, ORIGINS, FORMS, HISTORY } from '../data/oud';
 import { AMBERGRIS_STEPS, AMBERGRIS_GRADES, AMBERGRIS_HISTORY } from '../data/ambergris';
 import { getProduct } from '../data/products';
+import { originPhoto } from '../data/photos';
 import OudWood from '../components/OudWood';
 import Ambergris from '../components/Ambergris';
 import ProductArt from '../components/ProductArt';
@@ -71,15 +72,18 @@ export default function OudGuide() {
             </div>
           </Reveal>
           <div className="origin-grid">
-            {ORIGINS.map((o, i) => (
+            {ORIGINS.map((o, i) => {
+              const photo = originPhoto(o.id);
+              return (
               <Reveal key={o.id} as="article" delay={(i % 3) * 90} className="origin-card">
                 <div className="origin-stage" style={{ '--from': o.from, '--to': o.to }}>
+                  {photo && <img className="origin-photo" src={photo} alt={`${o.label || o.id}, ${o.region}`} loading="lazy" />}
                   <OudWood
                     seed={`origin-${o.id}`}
                     tones={o.tones}
                     count={o.id === 'Vietnam' ? 1 : 3}
                     size={o.id === 'Vietnam' ? 1.9 : 1.1}
-                    className="origin-art"
+                    className={photo ? 'origin-art origin-art-chip' : 'origin-art'}
                   />
                 </div>
                 <div className="origin-body">
@@ -98,7 +102,8 @@ export default function OudGuide() {
                   </Link>
                 </div>
               </Reveal>
-            ))}
+              );
+            })}
           </div>
           <p className="guide-note">
             Tasting notes are generalisations. Every tree, region and distillation is different, which is part of oud’s charm.

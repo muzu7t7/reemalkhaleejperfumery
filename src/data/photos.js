@@ -12,3 +12,17 @@ for (const [path, url] of Object.entries(files)) {
 }
 
 export const photoFor = (id) => byId[id] || null;
+
+// Origin location photos: src/assets/origins/<origin id, lowercase>.jpg (cambodia, india, laos, vietnam, thailand, indonesia).
+const originFiles = import.meta.glob('../assets/origins/*.{jpg,jpeg,png,webp,avif}', {
+  eager: true,
+  query: '?url',
+  import: 'default',
+});
+
+const originById = {};
+for (const [path, url] of Object.entries(originFiles)) {
+  originById[path.split('/').pop().replace(/\.\w+$/, '').toLowerCase()] = url;
+}
+
+export const originPhoto = (id) => originById[String(id).toLowerCase()] || null;

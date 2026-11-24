@@ -2,13 +2,12 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, Star, Sparkles, Gift, Droplets, Leaf, MapPin } from 'lucide-react';
 import { products, collections, getProduct } from '../data/products';
 import { ORIGINS } from '../data/oud';
+import { originPhoto } from '../data/photos';
 import ProductArt from '../components/ProductArt';
 import ProductCard from '../components/ProductCard';
 import Reveal from '../components/Reveal';
 
 const TICKER = ['Cambodian Oud', 'Assam', 'Laotian', 'Kynam', 'Ambergris', 'Thai Oud', 'Borneo', 'Bakhoor', 'Dehn al Oud'];
-
-const HOME_ORIGINS = ['Cambodia', 'India', 'Laos', 'Vietnam'].map((id) => ORIGINS.find((o) => o.id === id));
 
 const REVIEWS = [
   {
@@ -232,20 +231,27 @@ export default function Home() {
           </Link>
         </Reveal>
         <div className="ingredients">
-          {HOME_ORIGINS.map((o, i) => (
-            <Reveal
-              key={o.id}
-              as={Link}
-              to={`/products?origin=${o.id}`}
-              delay={i * 80}
-              className="ingredient"
-              style={{ '--from': o.from, '--to': o.to }}
-            >
-              <MapPin size={26} />
-              <h3>{o.label || o.id}</h3>
-              <p>{o.tags.join(' · ')}</p>
-            </Reveal>
-          ))}
+          {ORIGINS.map((o, i) => {
+            const photo = originPhoto(o.id);
+            return (
+              <Reveal
+                key={o.id}
+                as={Link}
+                to={`/products?origin=${o.id}`}
+                delay={(i % 3) * 80}
+                className={`ingredient ${photo ? 'has-photo' : ''}`}
+                style={{ '--from': o.from, '--to': o.to }}
+              >
+                {photo ? (
+                  <img className="ingredient-photo" src={photo} alt={`${o.label || o.id}, ${o.region}`} loading="lazy" />
+                ) : (
+                  <MapPin size={26} />
+                )}
+                <h3>{o.label || o.id}</h3>
+                <p>{o.tags.join(' · ')}</p>
+              </Reveal>
+            );
+          })}
         </div>
       </section>
 

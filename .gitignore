@@ -16,3 +16,6 @@ Thumbs.db
 .idea/
 .vscode/*
 !.vscode/extensions.json
+
+# downloaded image bundles
+src/assets/products/*.zip
