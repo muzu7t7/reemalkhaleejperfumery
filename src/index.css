@@ -38,6 +38,7 @@
 
 [data-theme='dark'],
 .on-dark {
+  color-scheme: dark;
   --bg: #100c08;
   --bg-2: #171109;
   --surface: #1c150e;
@@ -70,6 +71,7 @@
 }
 
 html {
+  color-scheme: light;
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
 }
@@ -723,6 +725,17 @@ fieldset {
   color: var(--ink-2);
 }
 
+/* theme toggle */
+.theme-icon {
+  animation: theme-spin 0.5s var(--ease);
+}
+@keyframes theme-spin {
+  from {
+    transform: rotate(-90deg) scale(0.5);
+    opacity: 0;
+  }
+}
+
 /* mobile menu */
 .menu {
   position: fixed;
@@ -1161,19 +1174,19 @@ fieldset {
   transform: rotate(45deg);
   background: #fff;
 }
-.bento-oud .bento-link {
+.bento-oil .bento-link {
   min-height: 440px;
 }
-.bento-oud .bento-bottle {
+.bento-oil .bento-bottle {
   top: 8%;
   right: 50%;
   transform: translateX(50%);
   height: 60%;
 }
-.bento-oud .bento-link:hover .bento-bottle {
+.bento-oil .bento-link:hover .bento-bottle {
   transform: translateX(50%) translateY(-8px) rotate(3deg) scale(1.04);
 }
-.bento-oud .bento-text {
+.bento-oil .bento-text {
   max-width: 90%;
 }
 .bento-samples .bento-plain {
@@ -1208,14 +1221,14 @@ fieldset {
     grid-template-columns: repeat(12, 1fr);
     grid-template-rows: repeat(2, minmax(260px, auto));
   }
-  .bento-oud {
+  .bento-oil {
     grid-column: 1 / 6;
     grid-row: 1 / 3;
   }
-  .bento-floral {
+  .bento-wood {
     grid-column: 6 / 13;
   }
-  .bento-fresh {
+  .bento-bakhoor {
     grid-column: 6 / 10;
   }
   .bento-samples {
@@ -1224,19 +1237,19 @@ fieldset {
   .bento-link {
     min-height: 0;
   }
-  .bento-oud .bento-link {
+  .bento-oil .bento-link {
     min-height: 0;
   }
-  .bento-fresh .bento-bottle {
+  .bento-bakhoor .bento-bottle {
     right: 50%;
     transform: translateX(50%);
     top: 4%;
     height: 56%;
   }
-  .bento-fresh .bento-link:hover .bento-bottle {
+  .bento-bakhoor .bento-link:hover .bento-bottle {
     transform: translateX(50%) translateY(-8px) rotate(3deg) scale(1.04);
   }
-  .bento-fresh .bento-text {
+  .bento-bakhoor .bento-text {
     max-width: 100%;
   }
 }
@@ -1273,7 +1286,7 @@ fieldset {
   inset: 0;
   display: grid;
   place-items: center;
-  padding: 12% 16% 16%;
+  padding: 9% 8% 13%;
 }
 .pcard-bottle {
   width: 100%;
@@ -1668,7 +1681,7 @@ fieldset {
   background: linear-gradient(160deg, var(--t1), var(--t2));
   display: grid;
   place-items: center;
-  padding: 8% 22%;
+  padding: 6% 17%;
   overflow: hidden;
 }
 .pdp-stage::before {
@@ -2947,5 +2960,433 @@ fieldset {
   .reveal {
     opacity: 1;
     transform: none;
+  }
+}
+
+
+/* ---------- Oud additions ---------- */
+.art-photo {
+  object-fit: contain;
+}
+.text-link {
+  color: var(--gold);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.smoke {
+  opacity: 0;
+  animation: smoke 6s ease-in-out infinite;
+}
+.smoke-2 {
+  animation-delay: -2s;
+}
+.smoke-3 {
+  animation-delay: -4s;
+}
+@keyframes smoke {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  35% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-14px);
+  }
+}
+
+/* product spec table + origin link */
+.spec {
+  margin-top: 22px;
+  border-top: 1px solid var(--line);
+}
+.spec div {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding-block: 12px;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.92rem;
+}
+.spec dt {
+  color: var(--ink-3);
+}
+.spec dd {
+  text-align: right;
+  font-weight: 500;
+}
+.origin-link {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 22px;
+  padding: 16px 18px;
+  border-radius: var(--r-md);
+  background: var(--gold-soft);
+  transition: transform 0.35s var(--ease);
+}
+.origin-link:hover {
+  transform: translateX(4px);
+}
+.origin-link svg {
+  color: var(--gold);
+  flex: none;
+}
+.origin-link span {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.3;
+}
+.origin-link small {
+  color: var(--ink-2);
+}
+
+/* oud guide */
+.names {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 36px;
+}
+.names li {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 18px;
+  border-radius: var(--r-md);
+  border: 1px solid var(--line-2);
+}
+.names small {
+  font-size: 0.66rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.names span {
+  font-family: var(--f-display);
+  font-size: 1.15rem;
+}
+.oud-steps {
+  display: grid;
+  gap: 14px;
+}
+.origin-grid {
+  display: grid;
+  gap: 16px;
+}
+.origin-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: var(--r-lg);
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+.origin-stage {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  background: linear-gradient(165deg, var(--from), var(--to));
+}
+.origin-art {
+  position: absolute;
+  inset: 6% 0 4%;
+  width: 100%;
+  height: 90%;
+  filter: drop-shadow(0 18px 14px rgba(0, 0, 0, 0.35));
+}
+.origin-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 24px 24px 28px;
+}
+.origin-body .eyebrow {
+  margin-bottom: 0;
+}
+.origin-body h3 {
+  font-family: var(--f-display);
+  font-weight: 380;
+  font-size: 1.7rem;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+}
+.origin-body p {
+  color: var(--ink-2);
+  font-size: 0.95rem;
+}
+.origin-body .link-arrow {
+  margin-top: 6px;
+}
+.guide-note {
+  margin-top: 28px;
+  font-size: 0.85rem;
+  color: var(--ink-3);
+  text-align: center;
+}
+.forms {
+  display: grid;
+  gap: 16px;
+}
+.form-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+.form-stage {
+  position: relative;
+  align-self: stretch;
+  aspect-ratio: 4 / 3;
+  margin-bottom: 8px;
+  border-radius: var(--r-lg);
+  background: linear-gradient(165deg, var(--t1), var(--t2));
+}
+.form-art {
+  position: absolute;
+  inset: 4% 0 3%;
+  width: 100%;
+  height: 93%;
+  filter: drop-shadow(0 16px 12px rgba(50, 25, 8, 0.3));
+}
+.form-card h3 {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  font-family: var(--f-display);
+  font-weight: 380;
+  font-size: 1.7rem;
+}
+.form-card h3 span {
+  font-family: var(--f-ar);
+  font-size: 1.3rem;
+  color: var(--gold);
+}
+.form-card p {
+  color: var(--ink-2);
+}
+.form-how {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--ink) !important;
+}
+.timeline {
+  display: grid;
+  gap: 0;
+  border-top: 1px solid var(--line-2);
+}
+.tl-item {
+  display: grid;
+  gap: 8px;
+  padding-block: 28px;
+  border-bottom: 1px solid var(--line-2);
+}
+.tl-when {
+  font-family: var(--f-display);
+  font-style: italic;
+  font-size: 1.5rem;
+  font-weight: 300;
+  color: var(--gold-2);
+}
+.tl-item h3 {
+  font-family: var(--f-display);
+  font-weight: 380;
+  font-size: 1.5rem;
+  margin-bottom: 6px;
+}
+.tl-item p {
+  color: var(--ink-2);
+  max-width: 44em;
+}
+.guide-cta {
+  text-align: center;
+}
+.guide-cta .lede {
+  margin: 14px auto 28px;
+}
+@media (min-width: 700px) {
+  .origin-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 900px) {
+  .oud-steps {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .forms {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+  }
+  .tl-item {
+    grid-template-columns: 220px 1fr;
+    gap: 40px;
+  }
+}
+@media (min-width: 1100px) {
+  .origin-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* wide art (wood, bakhoor) in bento cards is sized by width, not by the tall-bottle box */
+.bento .bento-wood .bento-bottle,
+.bento .bento-bakhoor .bento-bottle {
+  height: auto;
+  aspect-ratio: 200 / 178;
+  right: auto;
+  left: auto;
+}
+.bento .bento-wood .bento-bottle {
+  right: 4%;
+  top: 50%;
+  width: 42%;
+  transform: translateY(-50%);
+}
+.bento .bento-wood .bento-link:hover .bento-bottle {
+  transform: translateY(-54%) rotate(2deg) scale(1.04);
+}
+.bento .bento-bakhoor .bento-bottle {
+  top: 2%;
+  left: 50%;
+  width: 40%;
+  transform: translateX(-50%);
+}
+.bento .bento-bakhoor h3 {
+  font-size: clamp(1.5rem, 2.2vw, 2rem);
+}
+.bento .bento-bakhoor .bento-link:hover .bento-bottle {
+  transform: translateX(-50%) translateY(-6px) scale(1.04);
+}
+@media (max-width: 899px) {
+  .bento .bento-wood .bento-bottle {
+    width: 46%;
+  }
+  .bento .bento-bakhoor .bento-bottle {
+    width: 46%;
+    top: 8%;
+    left: auto;
+    right: 5%;
+    transform: none;
+  }
+  .bento .bento-bakhoor .bento-link:hover .bento-bottle {
+    transform: translateY(-6px) scale(1.04);
+  }
+  .bento .bento-bakhoor .bento-text {
+    max-width: 100%;
+  }
+}
+
+/* real photos fill their frame instead of sitting inside the illustration padding */
+.art-photo {
+  object-fit: cover;
+  filter: none !important;
+  border-radius: inherit;
+}
+.pcard-link:has(.art-photo),
+.pdp-stage:has(.art-photo) {
+  padding: 0;
+}
+.pcard-link .art-photo,
+.pdp-stage .art-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.line-thumb .art-photo,
+.mini-thumb .art-photo,
+.sum-thumb .art-photo,
+.search-thumb .art-photo {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+}
+.line-thumb:has(.art-photo),
+.mini-thumb:has(.art-photo),
+.sum-thumb:has(.art-photo),
+.search-thumb:has(.art-photo) {
+  padding: 0;
+}
+.pdp-stage:has(.art-photo)::before,
+.pdp-stage:has(.art-photo) .pdp-glow {
+  display: none;
+}
+
+/* ---------- Ambergris additions ---------- */
+.jump {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 28px;
+}
+.jump a {
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: 1px solid var(--line-2);
+  font-size: 0.86rem;
+  font-weight: 600;
+  transition: all 0.25s var(--ease);
+}
+.jump a:hover {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--bg);
+}
+.amber-lede {
+  margin-bottom: 40px;
+}
+.sub-head {
+  margin-block: 56px 20px;
+  font-family: var(--f-display);
+  font-weight: 380;
+  font-size: 1.7rem;
+  letter-spacing: -0.01em;
+}
+.origin-grid.three {
+  grid-template-columns: 1fr;
+}
+@media (min-width: 900px) {
+  .origin-grid.three {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+.timeline-light .tl-when {
+  color: var(--gold);
+}
+
+/* home ambergris feature */
+.amber-band-wrap {
+  padding-block: 0;
+}
+.amber-band {
+  display: grid;
+  gap: 32px;
+  align-items: center;
+  padding: clamp(24px, 4vw, 56px);
+  border-radius: var(--r-lg);
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+.amber-copy .display-md {
+  margin-bottom: 18px;
+}
+.amber-stage {
+  aspect-ratio: 4 / 3;
+  position: relative;
+  border-radius: var(--r-lg);
+  background: linear-gradient(165deg, var(--t1), var(--t2));
+}
+.amber-art {
+  position: absolute;
+  inset: 4% 0 3%;
+  width: 100%;
+  height: 93%;
+  filter: drop-shadow(0 18px 14px rgba(40, 30, 15, 0.3));
+}
+@media (min-width: 900px) {
+  .amber-band {
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
   }
 }

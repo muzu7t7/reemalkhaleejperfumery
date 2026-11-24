@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { Heart, Plus } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { aed } from '../data/products';
-import Bottle from './Bottle';
+import ProductArt from './ProductArt';
 import Reveal from './Reveal';
 
 export default function ProductCard({ product, delay = 0 }) {
@@ -13,13 +13,7 @@ export default function ProductCard({ product, delay = 0 }) {
     <Reveal as="article" className="pcard" delay={delay}>
       <div className="pcard-stage" style={{ '--t1': product.tint[0], '--t2': product.tint[1] }}>
         <Link to={`/product/${product.id}`} className="pcard-link" aria-label={`View ${product.name}`}>
-          <Bottle
-            shape={product.shape}
-            liquid={product.liquid}
-            cap={product.cap}
-            label={product.name}
-            className="pcard-bottle"
-          />
+          <ProductArt product={product} className="pcard-bottle" />
         </Link>
         {product.badge && <span className="badge">{product.badge}</span>}
         <button

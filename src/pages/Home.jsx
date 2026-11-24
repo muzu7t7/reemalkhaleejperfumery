@@ -1,43 +1,39 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight, ArrowUpRight, Star, Sparkles, Gift, Droplets, Leaf, Flame, Flower2 } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, Star, Sparkles, Gift, Droplets, Leaf, MapPin } from 'lucide-react';
 import { products, collections, getProduct } from '../data/products';
-import Bottle from '../components/Bottle';
+import { ORIGINS } from '../data/oud';
+import ProductArt from '../components/ProductArt';
 import ProductCard from '../components/ProductCard';
 import Reveal from '../components/Reveal';
 
-const TICKER = ['Cambodian Oud', 'Saffron', 'Taif Rose', 'Amber', 'Sandalwood', 'White Musk', 'Frankincense', 'Bergamot'];
+const TICKER = ['Cambodian Oud', 'Assam', 'Laotian', 'Kynam', 'Ambergris', 'Thai Oud', 'Borneo', 'Bakhoor', 'Dehn al Oud'];
 
-const INGREDIENTS = [
-  { name: 'Oud', note: 'Aged for years. Dark, resinous, endlessly deep.', icon: Flame, from: '#7a3b12', to: '#241008' },
-  { name: 'Saffron', note: 'Hand-picked threads. Warm, leathery, golden.', icon: Sparkles, from: '#e0a020', to: '#8a4a0a' },
-  { name: 'Taif Rose', note: 'Harvested at dawn. Velvety, honeyed, luminous.', icon: Flower2, from: '#d98a9a', to: '#7a2f47' },
-  { name: 'Sea Salt', note: 'Gulf mineral air. Clean, bright, weightless.', icon: Droplets, from: '#78bccb', to: '#1d5f7a' },
-];
+const HOME_ORIGINS = ['Cambodia', 'India', 'Laos', 'Vietnam'].map((id) => ORIGINS.find((o) => o.id === id));
 
 const REVIEWS = [
   {
-    quote: 'It filled the whole room without shouting. Three people asked what I was wearing before dinner was over.',
+    quote: 'One drop and the whole room changed. Soft, honeyed, and it was still on my shirt the next morning.',
     who: 'Layla A.',
     where: 'Dubai',
-    product: 'Oud Majesty',
+    product: 'Cambodian Oud Oil',
   },
   {
-    quote: 'Finally a rose that is not sweet or old-fashioned. It feels modern and it lasts all the way to midnight.',
+    quote: 'We burn the bakhoor whenever guests come. Everyone asks where it is from, and the house smells wonderful for hours.',
     who: 'Noura K.',
     where: 'Abu Dhabi',
-    product: 'Desert Rose',
+    product: 'Royal Oud Bakhoor',
   },
   {
-    quote: 'The packaging alone is a gift, and what is inside justifies it. I have already ordered a second bottle.',
+    quote: 'Proper Assam oud: dark, earthy, leathery. The packaging is lovely, and I have already ordered the chips.',
     who: 'Omar S.',
     where: 'Sharjah',
-    product: 'Leather Enigma',
+    product: 'Assam Oud Oil',
   },
 ];
 
 export default function Home() {
-  const hero = getProduct('1');
-  const featured = products.slice(0, 4);
+  const hero = getProduct('oil-cambodia');
+  const featured = products.filter((p) => p.featured);
 
   return (
     <>
@@ -45,25 +41,26 @@ export default function Home() {
       <section className="hero pattern">
         <div className="container hero-grid">
           <div className="hero-copy">
-            <span className="eyebrow">Maison de parfum · Ras Al Khaimah</span>
+            <span className="eyebrow">House of oud · Ras Al Khaimah</span>
             <h1 className="display">
               Scent is the <em>memory</em> of the desert.
             </h1>
             <p className="lede">
-              Small-batch Arabian perfumes, blended from rare oud, saffron and Taif rose, and finished by hand in Ras Al Khaimah.
+              Pure oud oil, aged oud wood and bakhoor from Cambodia, Assam, Laos and Vietnam, chosen by hand and finished in Ras
+              Al Khaimah.
             </p>
             <div className="hero-cta">
               <Link to="/products" className="btn btn-solid btn-lg">
-                Explore fragrances <ArrowRight size={18} />
+                Shop oud <ArrowRight size={18} />
               </Link>
-              <Link to="/about" className="btn btn-ghost btn-lg">
-                Our story
+              <Link to="/oud" className="btn btn-ghost btn-lg">
+                Explore the oud guide
               </Link>
             </div>
             <dl className="hero-stats">
               <div>
-                <dt>4.8</dt>
-                <dd>Average rating</dd>
+                <dt>6</dt>
+                <dd>Oud origins</dd>
               </div>
               <div>
                 <dt>100%</dt>
@@ -79,7 +76,7 @@ export default function Home() {
           <div className="hero-stage">
             <div className="hero-arch" />
             <div className="hero-arch hero-arch-outline" />
-            <Bottle shape={hero.shape} liquid={hero.liquid} cap={hero.cap} label={hero.name} className="hero-bottle" />
+            <ProductArt product={hero} className="hero-bottle" />
 
             <svg className="hero-seal" viewBox="0 0 200 200" aria-hidden="true">
               <defs>
@@ -95,8 +92,8 @@ export default function Home() {
             </svg>
 
             <div className="float-card float-notes">
-              <span className="eyebrow">Top notes</span>
-              <strong>Saffron · Rose de Mai</strong>
+              <span className="eyebrow">{hero.name}</span>
+              <strong>{hero.notes.top.join(' · ')}</strong>
             </div>
             <div className="float-card float-rate">
               <span className="stars" aria-hidden="true">
@@ -129,11 +126,11 @@ export default function Home() {
           <div>
             <span className="eyebrow">Collections</span>
             <h2 className="display-md">
-              Three worlds, <em>one house.</em>
+              Oud, in <em>every form.</em>
             </h2>
           </div>
           <Link to="/products" className="link-arrow">
-            View all fragrances <ArrowUpRight size={18} />
+            Shop everything <ArrowUpRight size={18} />
           </Link>
         </Reveal>
 
@@ -141,16 +138,15 @@ export default function Home() {
           {collections.map((c, i) => {
             const p = getProduct(c.productId);
             return (
-              <Reveal
-                key={c.id}
-                as="div"
-                delay={i * 90}
-                className={`bento-card bento-${c.id}`}
-              >
-                <Link to={`/products?cat=${c.category}`} className="bento-link" style={{ '--t1': p.tint[0], '--t2': p.tint[1] }}>
-                  <Bottle shape={p.shape} liquid={p.liquid} cap={p.cap} label={p.name} className="bento-bottle" />
+              <Reveal key={c.id} as="div" delay={i * 90} className={`bento-card bento-${c.id}`}>
+                <Link
+                  to={`/products?type=${encodeURIComponent(c.type)}`}
+                  className="bento-link"
+                  style={{ '--t1': p.tint[0], '--t2': p.tint[1] }}
+                >
+                  <ProductArt product={p} className="bento-bottle" />
                   <div className="bento-text">
-                    <span className="eyebrow">{c.category}</span>
+                    <span className="eyebrow">{c.type}</span>
                     <h3>{c.title}</h3>
                     <p>{c.blurb}</p>
                   </div>
@@ -166,7 +162,7 @@ export default function Home() {
             <Link to="/products" className="bento-link bento-plain">
               <Gift size={28} />
               <h3>Two samples, on us</h3>
-              <p>Every order ships with two 2 ml discoveries chosen to match your taste.</p>
+              <p>Every order ships with two 1 ml oud oil samples from different origins, so you can find your favourite.</p>
               <span className="link-arrow">
                 Start shopping <ArrowUpRight size={16} />
               </span>
@@ -181,7 +177,7 @@ export default function Home() {
           <div>
             <span className="eyebrow">Bestsellers</span>
             <h2 className="display-md">
-              The signature <em>collection</em>
+              Where to <em>begin</em>
             </h2>
           </div>
           <Link to="/products" className="link-arrow">
@@ -195,12 +191,70 @@ export default function Home() {
         </div>
       </section>
 
+      {/* AMBERGRIS */}
+      <section className="container amber-band-wrap">
+        <Reveal className="amber-band">
+          <div className="amber-copy">
+            <span className="eyebrow">New · Ambergris</span>
+            <h2 className="display-md">
+              Oud’s partner from <em>the sea</em>
+            </h2>
+            <p className="lede">
+              Rare, naturally aged ambergris in raw lumps, as a tincture and blended with Cambodian oud. Warm, sweet and soft, and
+              it makes everything it touches last longer.
+            </p>
+            <div className="hero-cta">
+              <Link to="/products?type=Ambergris" className="btn btn-solid btn-lg">
+                Shop ambergris <ArrowRight size={18} />
+              </Link>
+              <Link to="/oud#ambergris" className="btn btn-ghost btn-lg">
+                Its history
+              </Link>
+            </div>
+          </div>
+          <div className="amber-stage" style={{ '--t1': '#e4e0d6', '--t2': '#a9a393' }}>
+            <ProductArt product={getProduct('ambergris-grey')} className="amber-art" />
+          </div>
+        </Reveal>
+      </section>
+
+      {/* ORIGINS */}
+      <section className="section container">
+        <Reveal className="section-head">
+          <div>
+            <span className="eyebrow">Origins</span>
+            <h2 className="display-md">
+              Six origins, six <em>personalities</em>
+            </h2>
+          </div>
+          <Link to="/oud#origins" className="link-arrow">
+            Read the oud guide <ArrowUpRight size={18} />
+          </Link>
+        </Reveal>
+        <div className="ingredients">
+          {HOME_ORIGINS.map((o, i) => (
+            <Reveal
+              key={o.id}
+              as={Link}
+              to={`/products?origin=${o.id}`}
+              delay={i * 80}
+              className="ingredient"
+              style={{ '--from': o.from, '--to': o.to }}
+            >
+              <MapPin size={26} />
+              <h3>{o.label || o.id}</h3>
+              <p>{o.tags.join(' · ')}</p>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
       {/* STORY */}
       <section className="story on-dark pattern">
         <div className="container story-grid">
           <Reveal className="story-visual">
             <div className="story-arch">
-              <Bottle shape="arch" liquid={['#eab030', '#9a4f0a']} cap="#d7a83c" label="Saffron Reverie" className="story-bottle" />
+              <ProductArt product={getProduct('wood-cambodia')} className="story-bottle" />
             </div>
             <div className="story-badge">
               <strong>35</strong>
@@ -211,51 +265,27 @@ export default function Home() {
           <Reveal delay={120} className="story-copy">
             <span className="eyebrow">Our heritage</span>
             <h2 className="display-md">
-              The art of <em>slow</em> perfumery
+              Oud rewards <em>patience</em>
             </h2>
             <p className="lede">
-              We blend the way our grandparents did: oils macerated for months, resins aged in cedar, every batch
-              signed off by a master perfumer. Modern in spirit, unhurried in method.
+              A tree can take years to form its resin, and a piece of wood can rest for years more before it is ready. We buy
+              slowly, grade by hand and blend in small batches, so every oil and chip we sell has been chosen with care.
             </p>
             <ul className="tick-list">
               <li>
-                <Leaf size={18} /> Sustainably sourced oud and rose
+                <Leaf size={18} /> Responsibly sourced from six origins
               </li>
               <li>
-                <Droplets size={18} /> Up to 30% perfume oil concentration
+                <Droplets size={18} /> Oils distilled in small batches
               </li>
               <li>
                 <Sparkles size={18} /> Hand-finished and numbered in Ras Al Khaimah
               </li>
             </ul>
-            <Link to="/about" className="btn btn-gold btn-lg">
-              Discover our story <ArrowRight size={18} />
+            <Link to="/oud#history" className="btn btn-gold btn-lg">
+              The history of oud <ArrowRight size={18} />
             </Link>
           </Reveal>
-        </div>
-      </section>
-
-      {/* INGREDIENTS */}
-      <section className="section container">
-        <Reveal className="section-head">
-          <div>
-            <span className="eyebrow">Raw materials</span>
-            <h2 className="display-md">
-              Built from <em>rare</em> things
-            </h2>
-          </div>
-        </Reveal>
-        <div className="ingredients">
-          {INGREDIENTS.map((ing, i) => {
-            const Icon = ing.icon;
-            return (
-              <Reveal key={ing.name} delay={i * 80} className="ingredient" style={{ '--from': ing.from, '--to': ing.to }}>
-                <Icon size={26} />
-                <h3>{ing.name}</h3>
-                <p>{ing.note}</p>
-              </Reveal>
-            );
-          })}
         </div>
       </section>
 
@@ -266,7 +296,7 @@ export default function Home() {
             <div>
               <span className="eyebrow">In their words</span>
               <h2 className="display-md">
-                Worn, remembered, <em>asked about.</em>
+                Burned, worn, <em>asked about.</em>
               </h2>
             </div>
           </Reveal>
@@ -281,7 +311,7 @@ export default function Home() {
                 <blockquote>“{r.quote}”</blockquote>
                 <figcaption>
                   <strong>{r.who}</strong>, {r.where}
-                  <small>Wearing {r.product}</small>
+                  <small>Bought {r.product}</small>
                 </figcaption>
               </Reveal>
             ))}

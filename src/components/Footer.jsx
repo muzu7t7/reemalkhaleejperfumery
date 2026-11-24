@@ -39,15 +39,16 @@ export default function Footer() {
           <nav className="footer-cols" aria-label="Footer">
             <div>
               <h4>Shop</h4>
-              <Link to="/products">All fragrances</Link>
-              <Link to="/products?cat=Oud">Oud</Link>
-              <Link to="/products?cat=Floral">Floral</Link>
-              <Link to="/products?cat=Fresh">Fresh</Link>
+              <Link to="/products">All products</Link>
+              <Link to="/products?type=Oud%20Oil">Oud oil</Link>
+              <Link to="/products?type=Oud%20Wood">Oud wood</Link>
+              <Link to="/products?type=Bakhoor%20%26%20Burners">Bakhoor</Link>
+              <Link to="/products?type=Ambergris">Ambergris</Link>
             </div>
             <div>
               <h4>Maison</h4>
+              <Link to="/oud">Oud &amp; ambergris guide</Link>
               <Link to="/about">Our story</Link>
-              <Link to="/about#craft">Craftsmanship</Link>
               <Link to="/profile">Account</Link>
             </div>
             <div>

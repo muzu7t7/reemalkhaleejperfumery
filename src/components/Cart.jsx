@@ -4,7 +4,7 @@ import { X, Minus, Plus, Trash2, ArrowRight, Truck } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { aed, products, FREE_SHIPPING } from '../data/products';
 import useLockBody from '../hooks/useLockBody';
-import Bottle from './Bottle';
+import ProductArt from './ProductArt';
 
 export default function Cart() {
   const { isCartOpen, closeCart, cartItems, cartTotal, cartCount, updateQty, removeFromCart, addToCart } = useCart();
@@ -56,12 +56,12 @@ export default function Cart() {
           {cartItems.length === 0 ? (
             <div className="drawer-empty">
               <p className="display-sm">Your bag is empty</p>
-              <p className="muted">Begin with something people ask you about.</p>
+              <p className="muted">Begin with an oil, a chip of wood or a little bakhoor.</p>
               <div className="drawer-suggest">
                 {suggestions.map((p) => (
                   <Link key={p.id} to={`/product/${p.id}`} onClick={closeCart} className="mini-card">
                     <span className="mini-thumb" style={{ '--t1': p.tint[0], '--t2': p.tint[1] }}>
-                      <Bottle shape={p.shape} liquid={p.liquid} cap={p.cap} />
+                      <ProductArt product={p} />
                     </span>
                     <span>{p.name}</span>
                     <small>{aed(p.price)}</small>
@@ -79,7 +79,7 @@ export default function Cart() {
                     className="line-thumb"
                     style={{ '--t1': item.tint[0], '--t2': item.tint[1] }}
                   >
-                    <Bottle shape={item.shape} liquid={item.liquid} cap={item.cap} />
+                    <ProductArt product={item} />
                   </Link>
                   <div className="line-info">
                     <div className="line-top">

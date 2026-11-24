@@ -5,7 +5,7 @@ import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { saveOrder } from '../data/orders';
 import { aed, round2, FREE_SHIPPING, SHIPPING_FEE, VAT_RATE } from '../data/products';
-import Bottle from '../components/Bottle';
+import ProductArt from '../components/ProductArt';
 
 const EMIRATES = ['Dubai', 'Abu Dhabi', 'Sharjah', 'Ajman', 'Ras Al Khaimah', 'Fujairah', 'Umm Al Quwain'];
 
@@ -243,7 +243,7 @@ export default function Checkout() {
             {cartItems.map((i) => (
               <li key={i.id}>
                 <span className="sum-thumb" style={{ '--t1': i.tint[0], '--t2': i.tint[1] }}>
-                  <Bottle shape={i.shape} liquid={i.liquid} cap={i.cap} />
+                  <ProductArt product={i} />
                   <b>{i.quantity}</b>
                 </span>
                 <span className="sum-name">

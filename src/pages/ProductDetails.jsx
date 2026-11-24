@@ -1,17 +1,13 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { Heart, Minus, Plus, Star, Truck, ShieldCheck, Gift, Check, ChevronDown } from 'lucide-react';
+import { Heart, Minus, Plus, Star, Truck, ShieldCheck, Gift, Check, ChevronDown, MapPin } from 'lucide-react';
 import { useCart } from '../context/CartContext';
-import { aed, getProduct, products } from '../data/products';
-import Bottle from '../components/Bottle';
+import { aed, getProduct, products, TYPE_META } from '../data/products';
+import ProductArt from '../components/ProductArt';
 import ProductCard from '../components/ProductCard';
 import NotFound from './NotFound';
 
-const TIERS = [
-  ['top', 'Top', 'First 15 minutes'],
-  ['heart', 'Heart', 'Next 3 hours'],
-  ['base', 'Base', 'All day, and the next morning'],
-];
+const level = (v) => (v >= 85 ? 'Exceptional' : v >= 70 ? 'Strong' : 'Moderate');
 
 export default function ProductDetails() {
   const { id } = useParams();
@@ -27,10 +23,12 @@ export default function ProductDetails() {
 
   if (!product) return <NotFound />;
 
+  const meta = TYPE_META[product.type];
   const wished = wishlist.includes(product.id);
+  const hasMeters = product.longevity != null;
   const related = [
-    ...products.filter((p) => p.id !== product.id && p.category === product.category),
-    ...products.filter((p) => p.id !== product.id && p.category !== product.category),
+    ...products.filter((p) => p.id !== product.id && p.type === product.type),
+    ...products.filter((p) => p.id !== product.id && p.type !== product.type),
   ].slice(0, 4);
 
   const handleAdd = () => {
@@ -45,7 +43,7 @@ export default function ProductDetails() {
         <nav className="crumbs" aria-label="Breadcrumb">
           <Link to="/">Home</Link>
           <span>/</span>
-          <Link to="/products">Fragrances</Link>
+          <Link to={`/products?type=${encodeURIComponent(product.type)}`}>{product.type}</Link>
           <span>/</span>
           <span aria-current="page">{product.name}</span>
         </nav>
@@ -54,7 +52,7 @@ export default function ProductDetails() {
           <div className="pdp-media">
             <div className="pdp-stage pattern" style={{ '--t1': product.tint[0], '--t2': product.tint[1] }}>
               <div className="pdp-glow" />
-              <Bottle shape={product.shape} liquid={product.liquid} cap={product.cap} label={product.name} className="pdp-bottle" />
+              <ProductArt product={product} className="pdp-bottle" />
               {product.badge && <span className="badge">{product.badge}</span>}
               <span className="pdp-size">{product.size}</span>
             </div>
@@ -74,7 +72,7 @@ export default function ProductDetails() {
                 ))}
               </span>
               <span>
-                {product.rating} <span className="muted">({product.reviews} reviews)</span>
+                {product.rating.toFixed(1)} <span className="muted">({product.reviews} reviews)</span>
               </span>
             </div>
 
@@ -123,51 +121,73 @@ export default function ProductDetails() {
               </li>
             </ul>
 
-            <div className="pyramid">
-              <h2 className="eyebrow">Fragrance pyramid</h2>
-              {TIERS.map(([key, label, when]) => (
-                <div key={key} className={`tier tier-${key}`}>
-                  <div className="tier-label">
-                    <strong>{label}</strong>
-                    <small>{when}</small>
+            {product.notes && (
+              <div className="pyramid">
+                <h2 className="eyebrow">Scent profile</h2>
+                {meta.tiers.map(([key, label, when]) => (
+                  <div key={key} className={`tier tier-${key}`}>
+                    <div className="tier-label">
+                      <strong>{label}</strong>
+                      <small>{when}</small>
+                    </div>
+                    <div className="tier-notes">
+                      {product.notes[key].map((n) => (
+                        <span key={n} className="note">
+                          {n}
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                  <div className="tier-notes">
-                    {product.notes[key].map((n) => (
-                      <span key={n} className="note">
-                        {n}
-                      </span>
-                    ))}
+                ))}
+              </div>
+            )}
+
+            {hasMeters && (
+              <div className="meters">
+                {[
+                  [meta.meters[0], product.longevity],
+                  [meta.meters[1], product.projection],
+                ].map(([name, value]) => (
+                  <div className="meter" key={name}>
+                    <span>{name}</span>
+                    <div className="meter-bar">
+                      <i style={{ '--v': value / 100 }} />
+                    </div>
+                    <b>{level(value)}</b>
                   </div>
+                ))}
+              </div>
+            )}
+
+            <dl className="spec">
+              {product.spec.map(([k, v]) => (
+                <div key={k}>
+                  <dt>{k}</dt>
+                  <dd>{v}</dd>
                 </div>
               ))}
-            </div>
+            </dl>
 
-            <div className="meters">
-              <div className="meter">
-                <span>Longevity</span>
-                <div className="meter-bar">
-                  <i style={{ '--v': product.longevity / 100 }} />
-                </div>
-                <b>{product.longevity >= 85 ? '10+ hrs' : product.longevity >= 70 ? '7–9 hrs' : '4–6 hrs'}</b>
-              </div>
-              <div className="meter">
-                <span>Projection</span>
-                <div className="meter-bar">
-                  <i style={{ '--v': product.projection / 100 }} />
-                </div>
-                <b>{product.projection >= 80 ? 'Strong' : product.projection >= 65 ? 'Moderate' : 'Intimate'}</b>
-              </div>
-            </div>
+            {(product.type === 'Oud Oil' || product.type === 'Oud Wood' || product.type === 'Ambergris') && (
+              <Link to={product.type === 'Ambergris' ? '/oud#ambergris' : '/oud#origins'} className="origin-link">
+                <MapPin size={18} />
+                <span>
+                  <strong>{product.type === 'Ambergris' ? 'About ambergris' : `About ${product.origin} oud`}</strong>
+                  <small>
+                    {product.type === 'Ambergris'
+                      ? 'What it is, how it ages and its long history'
+                      : 'How it smells, where it grows and how it differs'}
+                  </small>
+                </span>
+              </Link>
+            )}
 
             <div className="accordion">
               <details open>
                 <summary>
-                  Details <ChevronDown size={18} />
+                  How to use <ChevronDown size={18} />
                 </summary>
-                <p>
-                  {product.size}. Suited to {product.gender.toLowerCase()} wear, best for {product.occasion.toLowerCase()} occasions. Presented in a
-                  numbered glass flacon with a brass collar.
-                </p>
+                <p>{meta.howTo}</p>
               </details>
               <details>
                 <summary>
@@ -179,7 +199,7 @@ export default function ProductDetails() {
                 <summary>
                   Returns <ChevronDown size={18} />
                 </summary>
-                <p>Unopened bottles can be returned within 14 days. Opened fragrances are non-returnable, so order a discovery sample first.</p>
+                <p>Unopened items can be returned within 14 days. Opened oils, wood and bakhoor are non-returnable, so try our samples first.</p>
               </details>
             </div>
           </div>

@@ -12,6 +12,7 @@ import Checkout from './pages/Checkout';
 import Auth from './pages/Auth';
 import Profile from './pages/Profile';
 import About from './pages/About';
+import OudGuide from './pages/OudGuide';
 import NotFound from './pages/NotFound';
 
 function ScrollManager() {
@@ -50,6 +51,7 @@ export default function App() {
             <Route path="/auth" element={<Auth />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/about" element={<About />} />
+            <Route path="/oud" element={<OudGuide />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>

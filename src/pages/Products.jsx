@@ -1,12 +1,10 @@
 import { useMemo, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { SlidersHorizontal, X } from 'lucide-react';
-import { products, aed } from '../data/products';
+import { products, aed, TYPES } from '../data/products';
 import ProductCard from '../components/ProductCard';
 
-const CATEGORIES = ['All', ...new Set(products.map((p) => p.category))];
-const GENDERS = ['All', 'Women', 'Men', 'Unisex'];
-const OCCASIONS = ['All', 'Daily', 'Evening', 'Wedding'];
+const ORIGIN_LIST = ['All', ...new Set(products.map((p) => p.origin))];
 const MAX = Math.max(...products.map((p) => p.price));
 const MIN = Math.min(...products.map((p) => p.price));
 
@@ -17,19 +15,13 @@ const SORTS = {
   rated: { label: 'Top rated', fn: (a, b) => b.rating - a.rating || b.reviews - a.reviews },
 };
 
-function Segmented({ label, options, value, onChange }) {
+function Chips({ label, options, value, onChange }) {
   return (
     <fieldset className="seg">
       <legend>{label}</legend>
       <div className="chips">
         {options.map((o) => (
-          <button
-            key={o}
-            type="button"
-            className={`chip ${value === o ? 'is-active' : ''}`}
-            aria-pressed={value === o}
-            onClick={() => onChange(o)}
-          >
+          <button key={o} type="button" className={`chip ${value === o ? 'is-active' : ''}`} aria-pressed={value === o} onClick={() => onChange(o)}>
             {o}
           </button>
         ))}
@@ -40,32 +32,33 @@ function Segmented({ label, options, value, onChange }) {
 
 export default function Products() {
   const [params, setParams] = useSearchParams();
-  const cat = CATEGORIES.includes(params.get('cat')) ? params.get('cat') : 'All';
+  const type = TYPES.includes(params.get('type')) ? params.get('type') : 'All';
+  const origin = ORIGIN_LIST.includes(params.get('origin')) ? params.get('origin') : 'All';
   const [sort, setSort] = useState('featured');
-  const [gender, setGender] = useState('All');
-  const [occasion, setOccasion] = useState('All');
   const [maxPrice, setMaxPrice] = useState(MAX);
-  const [panel, setPanel] = useState(false);
+  const [panel, setPanel] = useState(params.has('origin'));
 
-  const setCat = (c) => setParams(c === 'All' ? {} : { cat: c });
+  const setParam = (key, value) => {
+    const next = new URLSearchParams(params);
+    if (value === 'All') next.delete(key);
+    else next.set(key, value);
+    setParams(next);
+  };
 
   const list = useMemo(
     () =>
       products
-        .filter((p) => cat === 'All' || p.category === cat)
-        .filter((p) => gender === 'All' || p.gender === gender)
-        .filter((p) => occasion === 'All' || p.occasion === occasion)
+        .filter((p) => type === 'All' || p.type === type)
+        .filter((p) => origin === 'All' || p.origin === origin)
         .filter((p) => p.price <= maxPrice)
         .sort(SORTS[sort].fn),
-    [cat, gender, occasion, maxPrice, sort],
+    [type, origin, maxPrice, sort],
   );
 
-  const activeCount = (gender !== 'All') + (occasion !== 'All') + (maxPrice < MAX);
+  const activeCount = (origin !== 'All') + (maxPrice < MAX);
   const reset = () => {
-    setGender('All');
-    setOccasion('All');
     setMaxPrice(MAX);
-    setCat('All');
+    setParams({});
   };
 
   return (
@@ -74,35 +67,30 @@ export default function Products() {
         <div className="container">
           <span className="eyebrow">The collection</span>
           <h1 className="display-md">
-            Our <em>fragrances</em>
+            Oud, by <em>origin</em> and form
           </h1>
-          <p className="lede">Eight compositions, each finished by hand. Filter by family, wearer or occasion.</p>
+          <p className="lede">
+            {products.length} pieces: pure oils, aged wood and bakhoor, from six origins. Not sure where to start? Read the{' '}
+            <Link to="/oud" className="text-link">
+              oud guide
+            </Link>
+            .
+          </p>
         </div>
       </section>
 
       <section className="container shop">
         <div className="shop-bar">
-          <div className="chips chips-scroll" role="group" aria-label="Fragrance family">
-            {CATEGORIES.map((c) => (
-              <button
-                key={c}
-                type="button"
-                className={`chip ${cat === c ? 'is-active' : ''}`}
-                aria-pressed={cat === c}
-                onClick={() => setCat(c)}
-              >
-                {c}
+          <div className="chips chips-scroll" role="group" aria-label="Product type">
+            {['All', ...TYPES].map((t) => (
+              <button key={t} type="button" className={`chip ${type === t ? 'is-active' : ''}`} aria-pressed={type === t} onClick={() => setParam('type', t)}>
+                {t}
               </button>
             ))}
           </div>
 
           <div className="shop-tools">
-            <button
-              type="button"
-              className={`btn btn-ghost btn-sm ${panel ? 'is-active' : ''}`}
-              onClick={() => setPanel((v) => !v)}
-              aria-expanded={panel}
-            >
+            <button type="button" className={`btn btn-ghost btn-sm ${panel ? 'is-active' : ''}`} onClick={() => setPanel((v) => !v)} aria-expanded={panel}>
               <SlidersHorizontal size={16} /> Filters{activeCount ? ` (${activeCount})` : ''}
             </button>
             <label className="select">
@@ -120,22 +108,12 @@ export default function Products() {
 
         <div className={`filter-panel ${panel ? 'is-open' : ''}`}>
           <div className="filter-inner">
-            <Segmented label="For" options={GENDERS} value={gender} onChange={setGender} />
-            <Segmented label="Occasion" options={OCCASIONS} value={occasion} onChange={setOccasion} />
+            <Chips label="Origin" options={ORIGIN_LIST} value={origin} onChange={(v) => setParam('origin', v)} />
             <div className="seg">
               <label htmlFor="price-range" className="seg-legend">
                 Max price <strong>{aed(maxPrice)}</strong>
               </label>
-              <input
-                id="price-range"
-                type="range"
-                className="range"
-                min={MIN}
-                max={MAX}
-                step={10}
-                value={maxPrice}
-                onChange={(e) => setMaxPrice(Number(e.target.value))}
-              />
+              <input id="price-range" type="range" className="range" min={MIN} max={MAX} step={10} value={maxPrice} onChange={(e) => setMaxPrice(Number(e.target.value))} />
             </div>
             <button type="button" className="link-btn" onClick={reset}>
               <X size={14} /> Clear all
@@ -144,7 +122,7 @@ export default function Products() {
         </div>
 
         <p className="shop-count" aria-live="polite">
-          {list.length} {list.length === 1 ? 'fragrance' : 'fragrances'}
+          {list.length} {list.length === 1 ? 'product' : 'products'}
         </p>
 
         {list.length === 0 ? (

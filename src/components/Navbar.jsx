@@ -1,15 +1,17 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
-import { Search, ShoppingBag, Menu, X, User, Sun, Moon, ArrowUpRight } from 'lucide-react';
+import { Search, ShoppingBag, Menu, X, User, ArrowUpRight } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import useLockBody from '../hooks/useLockBody';
 import Logo from './Logo';
 import SearchOverlay from './SearchOverlay';
+import ThemeSwitcher from './ThemeSwitcher';
 
 const LINKS = [
-  { to: '/products', label: 'Fragrances', end: true },
+  { to: '/products', label: 'Shop', end: true },
   { to: '/#collections', label: 'Collections' },
+  { to: '/oud', label: 'Guide' },
   { to: '/about', label: 'Our Story' },
 ];
 
@@ -20,7 +22,6 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [theme, setTheme] = useState(() => document.documentElement.dataset.theme || 'light');
   useLockBody(menuOpen);
 
   useEffect(() => setMenuOpen(false), [pathname]);
@@ -42,17 +43,6 @@ export default function Navbar() {
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, []);
-
-  const toggleTheme = () => {
-    const next = theme === 'dark' ? 'light' : 'dark';
-    setTheme(next);
-    document.documentElement.dataset.theme = next;
-    try {
-      localStorage.setItem('rk.theme', next);
-    } catch {
-      /* ignore */
-    }
-  };
 
   const closeSearch = useCallback(() => setSearchOpen(false), []);
 
@@ -97,14 +87,7 @@ export default function Navbar() {
             <button type="button" className="icon-btn" onClick={() => setSearchOpen(true)} aria-label="Search (Ctrl+K)">
               <Search size={20} />
             </button>
-            <button
-              type="button"
-              className="icon-btn nav-theme"
-              onClick={toggleTheme}
-              aria-label={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
-            >
-              {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
-            </button>
+            <ThemeSwitcher className="nav-theme" />
             <Link to={user ? '/profile' : '/auth'} className="icon-btn nav-account" aria-label={user ? 'Your account' : 'Sign in'}>
               <User size={20} />
             </Link>
@@ -133,9 +116,7 @@ export default function Navbar() {
             ),
           )}
         </nav>
-        <button type="button" className="btn btn-ghost" onClick={toggleTheme}>
-          {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />} {theme === 'dark' ? 'Light' : 'Dark'} theme
-        </button>
+        <ThemeSwitcher variant="labelled" />
       </div>
 
       <SearchOverlay open={searchOpen} onClose={closeSearch} />

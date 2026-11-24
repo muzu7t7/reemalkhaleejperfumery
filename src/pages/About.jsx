@@ -5,15 +5,15 @@ import Reveal from '../components/Reveal';
 
 const VALUES = [
   { icon: Hourglass, title: 'Unhurried', text: 'Oils are macerated for months and resins aged in cedar. We do not rush a fragrance to meet a calendar.' },
-  { icon: Leaf, title: 'Responsibly sourced', text: 'We buy oud, rose and saffron from growers we know, and pay for quality rather than volume.' },
+  { icon: Leaf, title: 'Responsibly sourced', text: 'We buy oud from growers and distillers we know across six origins, and pay for quality rather than volume.' },
   { icon: Hand, title: 'Hand-finished', text: 'Each flacon is filled, capped, numbered and inspected by hand before it leaves Ras Al Khaimah.' },
 ];
 
 const STEPS = [
-  ['01', 'Gather', 'Raw materials arrive from Cambodia, Taif, Iran and the Mediterranean, and are graded on the day.'],
-  ['02', 'Compose', 'Our perfumers build each accord on paper first, then on skin, then over weeks of adjustment.'],
-  ['03', 'Mature', 'Blends rest in glass for up to twelve weeks so the notes marry and the edges soften.'],
-  ['04', 'Finish', 'Filtered, bottled and numbered by hand, then boxed with two discovery samples.'],
+  ['01', 'Gather', 'Oud arrives from Cambodia, Assam, Laos, Thailand, Vietnam and Indonesia, and is graded by colour, weight and scent on the day.'],
+  ['02', 'Compose', 'Our blenders build each accord on paper first, then on skin, then over weeks of adjustment.'],
+  ['03', 'Mature', 'Oils and blends rest in glass for up to twelve weeks so the notes marry and the edges soften.'],
+  ['04', 'Finish', 'Filtered, bottled or weighed, and numbered by hand, then boxed with two discovery samples.'],
 ];
 
 export default function About() {

@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 import { Search, X } from 'lucide-react';
 import { products, aed } from '../data/products';
 import useLockBody from '../hooks/useLockBody';
-import Bottle from './Bottle';
+import ProductArt from './ProductArt';
 
-const SUGGESTIONS = ['Oud', 'Rose', 'Amber', 'Saffron', 'Musk'];
+const SUGGESTIONS = ['Cambodian', 'Assam', 'Kynam', 'Ambergris', 'Bakhoor'];
 
 export default function SearchOverlay({ open, onClose }) {
   const [query, setQuery] = useState('');
@@ -28,7 +28,7 @@ export default function SearchOverlay({ open, onClose }) {
     const q = query.trim().toLowerCase();
     if (!q) return [];
     return products.filter((p) =>
-      [p.name, p.family, p.category, ...p.notes.top, ...p.notes.heart, ...p.notes.base]
+      [p.name, p.family, p.type, p.origin, ...(p.notes ? [...p.notes.top, ...p.notes.heart, ...p.notes.base] : [])]
         .join(' ')
         .toLowerCase()
         .includes(q),
@@ -66,14 +66,14 @@ export default function SearchOverlay({ open, onClose }) {
             </div>
           </div>
         ) : results.length === 0 ? (
-          <p className="search-empty">No fragrances match “{query}”. Try a note like oud, rose or musk.</p>
+          <p className="search-empty">No fragrances match “{query}”. Try an origin like Cambodia or Assam, or a form like oil or bakhoor.</p>
         ) : (
           <ul className="search-results">
             {results.map((p) => (
               <li key={p.id}>
                 <Link to={`/product/${p.id}`} onClick={onClose} className="search-row">
                   <span className="search-thumb" style={{ '--t1': p.tint[0], '--t2': p.tint[1] }}>
-                    <Bottle shape={p.shape} liquid={p.liquid} cap={p.cap} />
+                    <ProductArt product={p} />
                   </span>
                   <span className="search-meta">
                     <strong>{p.name}</strong>
