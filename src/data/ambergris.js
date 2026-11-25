@@ -84,6 +84,6 @@ export const isAmbergris = (p) => p.type === 'Ambergris';
 export const AMBERGRIS_LEGAL = {
   title: 'Legal notice: ambergris',
   short: 'Ambergris is restricted or illegal to carry, import, export or sell in some countries.',
-  text: 'Ambergris comes from sperm whales, and some countries restrict or ban buying, owning, carrying, importing or exporting it, including the United States, Australia and India. Carrying it across a border, even in a small amount or as part of a blend or tincture, can mean seizure, fines or prosecution. We deliver within the UAE only. Check the law of every country you will travel to or ship to before you buy, and do not take it abroad unless you are sure it is allowed.',
-  confirm: 'I understand this notice. I am buying ambergris for use in the UAE and I will follow the laws of any country I carry it to.',
+  text: 'Ambergris comes from sperm whales, and some countries restrict or ban buying, owning, carrying, importing or exporting it, including the United States, Australia and India. Carrying it across a border, even in a small amount or as part of a blend or tincture, can mean seizure, fines or prosecution. We deliver within the UAE only. Reem Al Khaleej Perfumes is not responsible for any seizure, fine, delay or other consequence of carrying, shipping, importing or exporting it outside the UAE. Checking and following the laws of each country is the buyer’s responsibility.',
+  confirm: 'I understand this notice. I am buying ambergris for use in the UAE only, and I accept that Reem Al Khaleej Perfumes is not responsible for any seizure, fine, delay or other consequence of carrying, shipping, importing or exporting it outside the UAE.',
 };
