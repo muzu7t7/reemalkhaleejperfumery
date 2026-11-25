@@ -26,3 +26,29 @@ for (const [path, url] of Object.entries(originFiles)) {
 }
 
 export const originPhoto = (id) => originById[String(id).toLowerCase()] || null;
+
+// Oud chips photo for an origin: src/assets/origins/chips/<origin id, lowercase>.jpg if you add one,
+// otherwise the matching Oud Wood product photo. Returns null when neither exists (the drawn chips are used).
+const chipFiles = import.meta.glob('../assets/origins/chips/*.{jpg,jpeg,png,webp,avif}', {
+  eager: true,
+  query: '?url',
+  import: 'default',
+});
+
+const chipById = {};
+for (const [path, url] of Object.entries(chipFiles)) {
+  chipById[path.split('/').pop().replace(/\.\w+$/, '').toLowerCase()] = url;
+}
+
+const ORIGIN_WOOD_PRODUCT = {
+  cambodia: 'wood-cambodia',
+  india: 'wood-assam',
+  laos: 'wood-laos',
+  vietnam: 'wood-kynam',
+  thailand: 'wood-thai',
+};
+
+export const chipsPhoto = (originId) => {
+  const id = String(originId).toLowerCase();
+  return chipById[id] || photoFor(ORIGIN_WOOD_PRODUCT[id]) || null;
+};

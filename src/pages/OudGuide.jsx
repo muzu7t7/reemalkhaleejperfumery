@@ -3,7 +3,7 @@ import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import { NAMES, PROCESS, ORIGINS, FORMS, HISTORY } from '../data/oud';
 import { AMBERGRIS_STEPS, AMBERGRIS_GRADES, AMBERGRIS_HISTORY } from '../data/ambergris';
 import { getProduct } from '../data/products';
-import { originPhoto } from '../data/photos';
+import { originPhoto, chipsPhoto, photoFor } from '../data/photos';
 import OudWood from '../components/OudWood';
 import Ambergris from '../components/Ambergris';
 import ProductArt from '../components/ProductArt';
@@ -74,17 +74,33 @@ export default function OudGuide() {
           <div className="origin-grid">
             {ORIGINS.map((o, i) => {
               const photo = originPhoto(o.id);
+              const chips = chipsPhoto(o.id);
+              // location photo fills the card, real oud chips sit in a round badge; fall back to whichever exists, then the drawing
+              const cover = photo || chips;
+              const badge = photo && chips;
               return (
               <Reveal key={o.id} as="article" delay={(i % 3) * 90} className="origin-card">
                 <div className="origin-stage" style={{ '--from': o.from, '--to': o.to }}>
-                  {photo && <img className="origin-photo" src={photo} alt={`${o.label || o.id}, ${o.region}`} loading="lazy" />}
-                  <OudWood
-                    seed={`origin-${o.id}`}
-                    tones={o.tones}
-                    count={o.id === 'Vietnam' ? 1 : 3}
-                    size={o.id === 'Vietnam' ? 1.9 : 1.1}
-                    className={photo ? 'origin-art origin-art-chip' : 'origin-art'}
-                  />
+                  {cover && <img className="origin-photo" src={cover} alt={`${o.label || o.id}, ${o.region}`} loading="lazy" />}
+                  {badge && <img className="origin-chip" src={chips} alt={`${o.id} oud chips`} loading="lazy" />}
+                  {!cover && (
+                    <OudWood
+                      seed={`origin-${o.id}`}
+                      tones={o.tones}
+                      count={o.id === 'Vietnam' ? 1 : 3}
+                      size={o.id === 'Vietnam' ? 1.9 : 1.1}
+                      className="origin-art"
+                    />
+                  )}
+                  {!chips && photo && (
+                    <OudWood
+                      seed={`origin-${o.id}`}
+                      tones={o.tones}
+                      count={o.id === 'Vietnam' ? 1 : 3}
+                      size={o.id === 'Vietnam' ? 1.9 : 1.1}
+                      className="origin-art origin-art-chip"
+                    />
+                  )}
                 </div>
                 <div className="origin-body">
                   <span className="eyebrow">{o.region}</span>
@@ -202,7 +218,11 @@ export default function OudGuide() {
           {AMBERGRIS_GRADES.map((g, i) => (
             <Reveal key={g.id} as="article" delay={i * 90} className="origin-card">
               <div className="origin-stage" style={{ '--from': g.from, '--to': g.to }}>
-                <Ambergris seed={`grade-${g.id}`} tones={g.tones} count={g.id === 'black' ? 3 : g.id === 'white' ? 2 : 3} className="origin-art" />
+                {photoFor(`ambergris-${g.id}`) ? (
+                  <img className="origin-photo" src={photoFor(`ambergris-${g.id}`)} alt={g.title} loading="lazy" />
+                ) : (
+                  <Ambergris seed={`grade-${g.id}`} tones={g.tones} count={g.id === 'black' ? 3 : g.id === 'white' ? 2 : 3} className="origin-art" />
+                )}
               </div>
               <div className="origin-body">
                 <h3>{g.title}</h3>

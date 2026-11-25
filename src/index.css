@@ -3641,3 +3641,17 @@ fieldset {
     transform: none;
   }
 }
+
+/* ---------- Guide: real oud chips badge ---------- */
+.origin-chip {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  z-index: 1;
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.4);
+}
