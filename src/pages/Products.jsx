@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { SlidersHorizontal, X } from 'lucide-react';
 import { products, aed, TYPES } from '../data/products';
 import ProductCard from '../components/ProductCard';
+import LegalNotice from '../components/LegalNotice';
 
 const ORIGIN_LIST = ['All', ...new Set(products.map((p) => p.origin))];
 const MAX = Math.ceil(Math.max(...products.map((p) => p.price)) / 10) * 10;
@@ -120,6 +121,8 @@ export default function Products() {
             </button>
           </div>
         </div>
+
+        {type === 'Ambergris' && <LegalNotice compact className="shop-legal" />}
 
         <p className="shop-count" aria-live="polite">
           {list.length} {list.length === 1 ? 'product' : 'products'}

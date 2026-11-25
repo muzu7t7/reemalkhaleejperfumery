@@ -6,6 +6,8 @@ import { useAuth } from '../context/AuthContext';
 import { saveOrder } from '../data/orders';
 import { aed, round2, vatIn, FREE_SHIPPING, SHIPPING_FEE } from '../data/products';
 import ProductArt from '../components/ProductArt';
+import LegalNotice from '../components/LegalNotice';
+import { isAmbergris, AMBERGRIS_LEGAL } from '../data/ambergris';
 
 const EMIRATES = ['Dubai', 'Abu Dhabi', 'Sharjah', 'Ajman', 'Ras Al Khaimah', 'Fujairah', 'Umm Al Quwain'];
 
@@ -40,6 +42,7 @@ export default function Checkout() {
   const { cartItems, cartTotal, clearCart } = useCart();
   const { user } = useAuth();
   const [pay, setPay] = useState('card');
+  const [ambergrisOk, setAmbergrisOk] = useState(false);
   const [placed, setPlaced] = useState(null);
   const [form, setForm] = useState({
     email: user?.email || '',
@@ -67,8 +70,11 @@ export default function Checkout() {
   const total = round2(cartTotal + shipping);
   const vat = round2(vatIn(cartTotal) + vatIn(shipping));
 
+  const hasAmbergris = cartItems.some(isAmbergris);
+
   const onSubmit = (e) => {
     e.preventDefault();
+    if (hasAmbergris && !ambergrisOk) return;
     const order = {
       id: `RK-${Math.floor(1000 + Math.random() * 9000)}`,
       date: new Date().toISOString(),
@@ -275,7 +281,16 @@ export default function Checkout() {
             <span>Includes VAT (5%)</span>
             <span>{aed(vat)}</span>
           </div>
-          <button type="submit" className="btn btn-solid btn-lg btn-block">
+          {hasAmbergris && (
+            <div className="legal-confirm">
+              <LegalNotice />
+              <label className="legal-check">
+                <input type="checkbox" required checked={ambergrisOk} onChange={(e) => setAmbergrisOk(e.target.checked)} />
+                <span>{AMBERGRIS_LEGAL.confirm}</span>
+              </label>
+            </div>
+          )}
+          <button type="submit" className="btn btn-solid btn-lg btn-block" disabled={hasAmbergris && !ambergrisOk}>
             Place order · {aed(total)}
           </button>
         </aside>

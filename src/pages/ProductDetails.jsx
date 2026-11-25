@@ -5,6 +5,8 @@ import { useCart } from '../context/CartContext';
 import { aed, getProduct, products, TYPE_META } from '../data/products';
 import ProductArt from '../components/ProductArt';
 import ProductCard from '../components/ProductCard';
+import LegalNotice from '../components/LegalNotice';
+import { isAmbergris } from '../data/ambergris';
 import NotFound from './NotFound';
 
 const level = (v) => (v >= 85 ? 'Exceptional' : v >= 70 ? 'Strong' : 'Moderate');
@@ -80,6 +82,8 @@ export default function ProductDetails() {
               {aed(product.price)} <small className="pdp-vat">incl. 5% VAT</small>
             </p>
             <p className="pdp-desc">{product.description}</p>
+
+            {isAmbergris(product) && <LegalNotice />}
 
             <div className="pdp-buy">
               <div className="stepper">

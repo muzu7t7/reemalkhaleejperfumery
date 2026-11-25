@@ -3472,3 +3472,74 @@ fieldset {
 .summary .sum-row.vat-row {
   margin-bottom: 22px;
 }
+
+/* ---------- Legal notice (ambergris) ---------- */
+.legal-notice {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  margin-top: 18px;
+  padding: 14px 16px;
+  border-radius: var(--r-md);
+  border: 1px solid color-mix(in srgb, #d9962b 55%, transparent);
+  background: color-mix(in srgb, #d9962b 14%, transparent);
+  color: var(--ink);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+.legal-notice svg {
+  flex: none;
+  margin-top: 2px;
+  color: #d9962b;
+}
+.legal-notice strong {
+  display: block;
+  font-weight: 600;
+}
+.legal-notice p {
+  margin-top: 4px;
+  color: var(--ink-2);
+}
+.legal-notice.is-compact {
+  margin-top: 0;
+  padding: 10px 12px;
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+.legal-notice.is-compact strong {
+  font-weight: 500;
+}
+.drawer-foot .legal-notice {
+  margin-block: 2px 4px;
+}
+.shop-legal {
+  margin-bottom: 16px;
+}
+.legal-confirm {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.legal-confirm .legal-notice {
+  margin-top: 0;
+}
+.legal-check {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--ink-2);
+  cursor: pointer;
+}
+.legal-check input {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  accent-color: #d9962b;
+}
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

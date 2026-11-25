@@ -5,6 +5,8 @@ import { useCart } from '../context/CartContext';
 import { aed, products, FREE_SHIPPING } from '../data/products';
 import useLockBody from '../hooks/useLockBody';
 import ProductArt from './ProductArt';
+import LegalNotice from './LegalNotice';
+import { isAmbergris } from '../data/ambergris';
 
 export default function Cart() {
   const { isCartOpen, closeCart, cartItems, cartTotal, cartVat, cartCount, updateQty, removeFromCart, addToCart } = useCart();
@@ -120,6 +122,7 @@ export default function Cart() {
               <span>Includes VAT (5%)</span>
               <span>{aed(cartVat)}</span>
             </div>
+            {cartItems.some(isAmbergris) && <LegalNotice compact />}
             <p className="muted small">All prices include VAT. Delivery is calculated at checkout.</p>
             <Link to="/checkout" onClick={closeCart} className="btn btn-solid btn-lg btn-block">
               Checkout <ArrowRight size={18} />

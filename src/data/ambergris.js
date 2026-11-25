@@ -77,3 +77,13 @@ export const AMBERGRIS_HISTORY = [
     text: 'Ambergris is expelled naturally and collected after it washes ashore, with no whale harmed. It remains legal to trade in many countries, but the rules differ, so check the law where you live. In Gulf perfumery it is still prized beside oud.',
   },
 ];
+
+// Shown wherever ambergris is sold. Laws change, so keep this wording general and have it checked before launch.
+export const isAmbergris = (p) => p.type === 'Ambergris';
+
+export const AMBERGRIS_LEGAL = {
+  title: 'Legal notice: ambergris',
+  short: 'Ambergris is restricted or illegal to carry, import, export or sell in some countries.',
+  text: 'Ambergris comes from sperm whales, and some countries restrict or ban buying, owning, carrying, importing or exporting it, including the United States, Australia and India. Carrying it across a border, even in a small amount or as part of a blend or tincture, can mean seizure, fines or prosecution. We deliver within the UAE only. Check the law of every country you will travel to or ship to before you buy, and do not take it abroad unless you are sure it is allowed.',
+  confirm: 'I understand this notice. I am buying ambergris for use in the UAE and I will follow the laws of any country I carry it to.',
+};
