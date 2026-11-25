@@ -4,7 +4,7 @@ import { ArrowRight, Check, CreditCard, Smartphone, Banknote, Lock } from 'lucid
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { saveOrder } from '../data/orders';
-import { aed, round2, FREE_SHIPPING, SHIPPING_FEE, VAT_RATE } from '../data/products';
+import { aed, round2, vatIn, FREE_SHIPPING, SHIPPING_FEE } from '../data/products';
 import ProductArt from '../components/ProductArt';
 
 const EMIRATES = ['Dubai', 'Abu Dhabi', 'Sharjah', 'Ajman', 'Ras Al Khaimah', 'Fujairah', 'Umm Al Quwain'];
@@ -63,8 +63,9 @@ export default function Checkout() {
   };
 
   const shipping = cartTotal === 0 || cartTotal >= FREE_SHIPPING ? 0 : SHIPPING_FEE;
-  const vat = round2(cartTotal * VAT_RATE);
-  const total = round2(cartTotal + shipping + vat);
+  // Prices and the delivery fee already include 5% VAT, so VAT is shown as a portion of the total, not added on top.
+  const total = round2(cartTotal + shipping);
+  const vat = round2(vatIn(cartTotal) + vatIn(shipping));
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -117,6 +118,10 @@ export default function Checkout() {
           <div className="sum-row total">
             <span>Total paid</span>
             <strong>{aed(placed.total)}</strong>
+          </div>
+          <div className="sum-row vat-row">
+            <span>Includes VAT (5%)</span>
+            <span>{aed(placed.vat)}</span>
           </div>
         </div>
         <div className="hero-cta">
@@ -262,13 +267,13 @@ export default function Checkout() {
             <span>Delivery</span>
             <span>{shipping ? aed(shipping) : 'Complimentary'}</span>
           </div>
-          <div className="sum-row">
-            <span>VAT (5%)</span>
-            <span>{aed(vat)}</span>
-          </div>
           <div className="sum-row total">
             <span>Total</span>
             <strong>{aed(total)}</strong>
+          </div>
+          <div className="sum-row vat-row">
+            <span>Includes VAT (5%)</span>
+            <span>{aed(vat)}</span>
           </div>
           <button type="submit" className="btn btn-solid btn-lg btn-block">
             Place order · {aed(total)}

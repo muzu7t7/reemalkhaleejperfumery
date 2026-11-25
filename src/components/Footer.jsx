@@ -66,7 +66,7 @@ export default function Footer() {
 
         <div className="footer-bottom">
           <span>© {new Date().getFullYear()} Reem Al Khaleej Perfumes. Dubai, United Arab Emirates.</span>
-          <span>Prices in AED. 5% VAT is added at checkout.</span>
+          <span>Prices in AED and include 5% VAT.</span>
         </div>
       </div>
     </footer>

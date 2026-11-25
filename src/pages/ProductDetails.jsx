@@ -76,7 +76,9 @@ export default function ProductDetails() {
               </span>
             </div>
 
-            <p className="pdp-price">{aed(product.price)}</p>
+            <p className="pdp-price">
+              {aed(product.price)} <small className="pdp-vat">incl. 5% VAT</small>
+            </p>
             <p className="pdp-desc">{product.description}</p>
 
             <div className="pdp-buy">

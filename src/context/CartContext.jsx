@@ -1,5 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { getProduct } from '../data/products';
+import { getProduct, vatIn } from '../data/products';
 
 const CartContext = createContext(null);
 
@@ -69,7 +69,9 @@ export function CartProvider({ children }) {
   );
 
   const cartCount = cartItems.reduce((sum, i) => sum + i.quantity, 0);
+  // Prices already include VAT; cartVat is the VAT portion of cartTotal, shown separately.
   const cartTotal = cartItems.reduce((sum, i) => sum + i.price * i.quantity, 0);
+  const cartVat = vatIn(cartTotal);
 
   const value = {
     isCartOpen,
@@ -78,6 +80,7 @@ export function CartProvider({ children }) {
     cartItems,
     cartCount,
     cartTotal,
+    cartVat,
     addToCart,
     updateQty,
     removeFromCart,

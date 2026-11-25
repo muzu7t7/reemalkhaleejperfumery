@@ -2,6 +2,9 @@ export const FREE_SHIPPING = 500;
 export const SHIPPING_FEE = 25;
 export const VAT_RATE = 0.05;
 
+// Catalogue prices below are before VAT. Every product exposes `net` (before VAT) and `price` (what the
+// customer pays: net + 5% VAT), and the whole storefront works from `price`.
+
 export const TYPES = ['Oud Oil', 'Oud Wood', 'Bakhoor & Burners', 'Ambergris', 'Perfumes'];
 
 // Per-type wording used on product pages.
@@ -57,7 +60,7 @@ export const TYPE_META = {
   },
 };
 
-export const products = [
+const catalogue = [
   /* ---------------- Oud oils ---------------- */
   {
     id: 'oil-cambodia',
@@ -709,6 +712,16 @@ export const products = [
   },
 ];
 
+
+export const round2 = (n) => Math.round(n * 100) / 100;
+
+export const grossPrice = (net) => round2(net * (1 + VAT_RATE));
+
+// The VAT contained in a VAT-inclusive amount.
+export const vatIn = (gross) => round2(gross - gross / (1 + VAT_RATE));
+
+export const products = catalogue.map((p) => ({ ...p, net: p.price, price: grossPrice(p.price) }));
+
 export const collections = [
   { id: 'oil', title: 'Oud Oils', blurb: 'Pure dehn al oud, bottled by origin.', type: 'Oud Oil', productId: 'oil-assam' },
   { id: 'wood', title: 'Oud Wood', blurb: 'Chips and chunks for the burner.', type: 'Oud Wood', productId: 'wood-cambodia' },
@@ -724,4 +737,3 @@ export const aed = (n) =>
     maximumFractionDigits: 2,
   }).format(n);
 
-export const round2 = (n) => Math.round(n * 100) / 100;

@@ -5,8 +5,8 @@ import { products, aed, TYPES } from '../data/products';
 import ProductCard from '../components/ProductCard';
 
 const ORIGIN_LIST = ['All', ...new Set(products.map((p) => p.origin))];
-const MAX = Math.max(...products.map((p) => p.price));
-const MIN = Math.min(...products.map((p) => p.price));
+const MAX = Math.ceil(Math.max(...products.map((p) => p.price)) / 10) * 10;
+const MIN = Math.floor(Math.min(...products.map((p) => p.price)) / 10) * 10;
 
 const SORTS = {
   featured: { label: 'Featured', fn: () => 0 },

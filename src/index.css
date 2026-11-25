@@ -3447,3 +3447,28 @@ fieldset {
   border: 2px solid rgba(255, 255, 255, 0.55);
   filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.35));
 }
+
+/* ---------- VAT ---------- */
+.pdp-vat {
+  margin-left: 6px;
+  font-family: var(--f-body);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--ink-3);
+}
+.sum-row.vat-row,
+.drawer-foot .sum-row.vat-row {
+  font-size: 0.88rem;
+  font-weight: 400;
+  color: var(--ink-3);
+}
+.drawer-foot .sum-row.vat-row {
+  margin-top: -4px;
+}
+.sum-row.total:has(+ .vat-row) {
+  margin-bottom: 6px;
+}
+.summary .sum-row.vat-row {
+  margin-bottom: 22px;
+}

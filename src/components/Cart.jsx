@@ -7,7 +7,7 @@ import useLockBody from '../hooks/useLockBody';
 import ProductArt from './ProductArt';
 
 export default function Cart() {
-  const { isCartOpen, closeCart, cartItems, cartTotal, cartCount, updateQty, removeFromCart, addToCart } = useCart();
+  const { isCartOpen, closeCart, cartItems, cartTotal, cartVat, cartCount, updateQty, removeFromCart, addToCart } = useCart();
   useLockBody(isCartOpen);
 
   useEffect(() => {
@@ -116,7 +116,11 @@ export default function Cart() {
               <span>Subtotal</span>
               <strong>{aed(cartTotal)}</strong>
             </div>
-            <p className="muted small">Taxes and delivery are calculated at checkout.</p>
+            <div className="sum-row vat-row">
+              <span>Includes VAT (5%)</span>
+              <span>{aed(cartVat)}</span>
+            </div>
+            <p className="muted small">All prices include VAT. Delivery is calculated at checkout.</p>
             <Link to="/checkout" onClick={closeCart} className="btn btn-solid btn-lg btn-block">
               Checkout <ArrowRight size={18} />
             </Link>
