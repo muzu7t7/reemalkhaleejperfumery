@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, Leaf, Hourglass, Hand } from 'lucide-react';
 import Bottle from '../components/Bottle';
 import Reveal from '../components/Reveal';
+import { storyPhoto } from '../data/photos';
 
 const VALUES = [
   { icon: Hourglass, title: 'Unhurried', text: 'Oils are macerated for months and resins aged in cedar. We do not rush a fragrance to meet a calendar.' },
@@ -34,8 +35,12 @@ export default function About() {
 
       <section className="section container split">
         <Reveal className="split-visual">
-          <div className="arch-frame" style={{ '--t1': '#ead6b6', '--t2': '#c9a06a' }}>
-            <Bottle shape="rect" liquid={['#9a5418', '#2a1207']} cap="#c9974a" label="Oud Majesty" className="arch-bottle" />
+          <div className={`arch-frame ${storyPhoto ? 'has-photo' : ''}`} style={{ '--t1': '#ead6b6', '--t2': '#c9a06a' }}>
+            {storyPhoto ? (
+              <img className="arch-photo" src={storyPhoto} alt="Our atelier in Ras Al Khaimah" loading="lazy" />
+            ) : (
+              <Bottle shape="rect" liquid={['#9a5418', '#2a1207']} cap="#c9974a" label="Oud Majesty" className="arch-bottle" />
+            )}
           </div>
         </Reveal>
         <Reveal delay={100} className="split-copy">

@@ -52,3 +52,12 @@ export const chipsPhoto = (originId) => {
   const id = String(originId).toLowerCase();
   return chipById[id] || photoFor(ORIGIN_WOOD_PRODUCT[id]) || null;
 };
+
+// Our Story page picture: src/assets/story/atelier.jpg (any of jpg, jpeg, png, webp, avif). Null until you add one.
+const storyFiles = import.meta.glob('../assets/story/atelier.{jpg,jpeg,png,webp,avif}', {
+  eager: true,
+  query: '?url',
+  import: 'default',
+});
+
+export const storyPhoto = Object.values(storyFiles)[0] || null;
