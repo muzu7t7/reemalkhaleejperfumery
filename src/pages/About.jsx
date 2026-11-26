@@ -3,6 +3,7 @@ import { ArrowRight, Leaf, Hourglass, Hand } from 'lucide-react';
 import Bottle from '../components/Bottle';
 import Reveal from '../components/Reveal';
 import { storyPhoto } from '../data/photos';
+import { useLang } from '../i18n';
 
 const VALUES = [
   { icon: Hourglass, title: 'Unhurried', text: 'Oils are macerated for months and resins aged in cedar. We do not rush a fragrance to meet a calendar.' },
@@ -18,17 +19,15 @@ const STEPS = [
 ];
 
 export default function About() {
+  const { t, rich, isAr } = useLang();
   return (
     <>
       <section className="page-hero pattern about-hero">
         <div className="container">
-          <span className="eyebrow">Our story · 35 years of tradition</span>
-          <h1 className="display">
-            Perfume as <em>hospitality.</em>
-          </h1>
+          <span className="eyebrow">{t('Our story · 35 years of tradition')}</span>
+          <h1 className="display">{rich(t('Perfume as *hospitality.*'))}</h1>
           <p className="lede">
-            In the Gulf, scent is how you welcome someone. Reem Al Khaleej began 35 years ago as a small atelier in Ras Al Khaimah with a
-            simple idea: make the kind of fragrance you would be proud to offer a guest, and proud to wear yourself.
+            {t('In the Gulf, scent is how you welcome someone. Reem Al Khaleej began 35 years ago as a small atelier in Ras Al Khaimah with a simple idea: make the kind of fragrance you would be proud to offer a guest, and proud to wear yourself.')}
           </p>
         </div>
       </section>
@@ -37,26 +36,21 @@ export default function About() {
         <Reveal className="split-visual">
           <div className={`arch-frame ${storyPhoto ? 'has-photo' : ''}`} style={{ '--t1': '#ead6b6', '--t2': '#c9a06a' }}>
             {storyPhoto ? (
-              <img className="arch-photo" src={storyPhoto} alt="Our atelier in Ras Al Khaimah" loading="lazy" />
+              <img className="arch-photo" src={storyPhoto} alt={t('Our atelier in Ras Al Khaimah')} loading="lazy" />
             ) : (
               <Bottle shape="rect" liquid={['#9a5418', '#2a1207']} cap="#c9974a" label="Oud Majesty" className="arch-bottle" />
             )}
           </div>
         </Reveal>
         <Reveal delay={100} className="split-copy">
-          <span className="eyebrow">The house</span>
-          <h2 className="display-md">
-            Old methods, <em>modern taste</em>
-          </h2>
+          <span className="eyebrow">{t('The house')}</span>
+          <h2 className="display-md">{rich(t('Old methods, *modern taste*'))}</h2>
           <p className="lede">
-            We keep the traditions that make Arabian perfumery unique: dense oud, saffron and amber, layered oils on skin. We pair
-            them with cleaner compositions, lighter packaging and a quieter kind of luxury.
+            {t('We keep the traditions that make Arabian perfumery unique: dense oud, saffron and amber, layered oils on skin. We pair them with cleaner compositions, lighter packaging and a quieter kind of luxury.')}
           </p>
-          <p className="muted">
-            Everything is made in small batches so each bottle can be checked, numbered and, if it is not right, remade.
-          </p>
+          <p className="muted">{t('Everything is made in small batches so each bottle can be checked, numbered and, if it is not right, remade.')}</p>
           <Link to="/products" className="btn btn-solid btn-lg">
-            Shop the collection <ArrowRight size={18} />
+            {t('Shop the collection')} <ArrowRight size={18} />
           </Link>
         </Reveal>
       </section>
@@ -64,29 +58,26 @@ export default function About() {
       <section className="section container legacy">
         <Reveal className="legacy-num">
           <span aria-hidden="true">35</span>
-          <strong>Years of tradition</strong>
+          <strong>{t('Years of tradition')}</strong>
         </Reveal>
         <Reveal delay={100} className="legacy-copy">
-          <span className="eyebrow">Since 1991</span>
-          <h2 className="display-md">
-            Three and a half decades, <em>one way of working</em>
-          </h2>
+          <span className="eyebrow">{t('Since 1991')}</span>
+          <h2 className="display-md">{rich(t('Three and a half decades, *one way of working*'))}</h2>
           <p className="lede">
-            Since 1991 we have kept to the same principles: honest raw materials, patient maturation and a finish done by hand.
-            Fashions in fragrance change every season. Our standards have not.
+            {t('Since 1991 we have kept to the same principles: honest raw materials, patient maturation and a finish done by hand. Fashions in fragrance change every season. Our standards have not.')}
           </p>
           <ul className="legacy-facts">
             <li>
               <strong>1991</strong>
-              <span>Our atelier opens in Ras Al Khaimah</span>
+              <span>{t('Our atelier opens in Ras Al Khaimah')}</span>
             </li>
             <li>
-              <strong>By hand</strong>
-              <span>Filled, capped and finished in Ras Al Khaimah</span>
+              <strong>{t('By hand')}</strong>
+              <span>{t('Filled, capped and finished in Ras Al Khaimah')}</span>
             </li>
             <li>
-              <strong>Numbered</strong>
-              <span>Every batch checked and signed off</span>
+              <strong>{t('Numbered')}</strong>
+              <span>{t('Every batch checked and signed off')}</span>
             </li>
           </ul>
         </Reveal>
@@ -96,18 +87,16 @@ export default function About() {
         <div className="container">
           <Reveal className="section-head">
             <div>
-              <span className="eyebrow">Craftsmanship</span>
-              <h2 className="display-md">
-                From raw material to <em>flacon</em>
-              </h2>
+              <span className="eyebrow">{t('Craftsmanship')}</span>
+              <h2 className="display-md">{rich(t('From raw material to *flacon*'))}</h2>
             </div>
           </Reveal>
           <ol className="steps">
-            {STEPS.map(([n, t, d], i) => (
+            {STEPS.map(([n, title, d], i) => (
               <Reveal as="li" key={n} delay={i * 90} className="step-card">
                 <span className="step-n">{n}</span>
-                <h3>{t}</h3>
-                <p>{d}</p>
+                <h3>{t(title)}</h3>
+                <p>{t(d)}</p>
               </Reveal>
             ))}
           </ol>
@@ -117,18 +106,16 @@ export default function About() {
       <section className="section container">
         <Reveal className="section-head center">
           <div>
-            <span className="eyebrow">What we believe</span>
-            <h2 className="display-md">
-              Three <em>promises</em>
-            </h2>
+            <span className="eyebrow">{t('What we believe')}</span>
+            <h2 className="display-md">{rich(t('Three *promises*'))}</h2>
           </div>
         </Reveal>
         <div className="values">
           {VALUES.map(({ icon: Icon, title, text }, i) => (
             <Reveal key={title} delay={i * 90} className="value">
               <Icon size={26} />
-              <h3>{title}</h3>
-              <p>{text}</p>
+              <h3>{t(title)}</h3>
+              <p>{t(text)}</p>
             </Reveal>
           ))}
         </div>

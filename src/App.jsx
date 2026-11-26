@@ -14,6 +14,7 @@ import Profile from './pages/Profile';
 import About from './pages/About';
 import OudGuide from './pages/OudGuide';
 import NotFound from './pages/NotFound';
+import { useLang } from './i18n';
 
 function ScrollManager() {
   const { pathname, hash } = useLocation();
@@ -34,12 +35,13 @@ function ScrollManager() {
 }
 
 export default function App() {
+  const { t } = useLang();
   return (
     <AuthProvider>
       <CartProvider>
         <ScrollManager />
         <a href="#main" className="skip">
-          Skip to content
+          {t('Skip to content')}
         </a>
         <Navbar />
         <main id="main">

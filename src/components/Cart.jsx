@@ -5,11 +5,14 @@ import { useCart } from '../context/CartContext';
 import { aed, products, FREE_SHIPPING } from '../data/products';
 import useLockBody from '../hooks/useLockBody';
 import ProductArt from './ProductArt';
+import { useLang } from '../i18n';
+import { localizeProduct } from '../i18n/products';
 import LegalNotice from './LegalNotice';
 import { isAmbergris } from '../data/ambergris';
 
 export default function Cart() {
   const { isCartOpen, closeCart, cartItems, cartTotal, cartVat, cartCount, updateQty, removeFromCart, addToCart } = useCart();
+  const { t, rich } = useLang();
   useLockBody(isCartOpen);
 
   useEffect(() => {
@@ -26,12 +29,12 @@ export default function Cart() {
   return (
     <div className={`drawer ${isCartOpen ? 'is-open' : ''}`} aria-hidden={!isCartOpen}>
       <div className="drawer-backdrop" onClick={closeCart} />
-      <aside className="drawer-panel" role="dialog" aria-modal="true" aria-label="Shopping bag">
+      <aside className="drawer-panel" role="dialog" aria-modal="true" aria-label={t('Shopping bag')}>
         <header className="drawer-head">
           <h2>
-            Your bag <span className="muted">({cartCount})</span>
+            {t('Your bag')} <span className="muted">({cartCount})</span>
           </h2>
-          <button type="button" className="icon-btn" onClick={closeCart} aria-label="Close bag">
+          <button type="button" className="icon-btn" onClick={closeCart} aria-label={t('Close bag')}>
             <X size={22} />
           </button>
         </header>
@@ -40,13 +43,11 @@ export default function Cart() {
           <p>
             <Truck size={16} />
             {cartItems.length === 0 ? (
-              <>Complimentary delivery over {aed(FREE_SHIPPING)}</>
+              <>{t('Complimentary delivery over {amount}', { amount: aed(FREE_SHIPPING) })}</>
             ) : remaining > 0 ? (
-              <>
-                You are <strong>{aed(remaining)}</strong> away from complimentary delivery
-              </>
+              <>{rich(t('You are *{amount}* away from complimentary delivery', { amount: aed(remaining) }), 'strong')}</>
             ) : (
-              <>You have unlocked complimentary delivery</>
+              <>{t('You have unlocked complimentary delivery')}</>
             )}
           </p>
           <div className="ship-track">
@@ -57,10 +58,12 @@ export default function Cart() {
         <div className="drawer-body">
           {cartItems.length === 0 ? (
             <div className="drawer-empty">
-              <p className="display-sm">Your bag is empty</p>
-              <p className="muted">Begin with an oil, a chip of wood or a little bakhoor.</p>
+              <p className="display-sm">{t('Your bag is empty')}</p>
+              <p className="muted">{t('Begin with an oil, a chip of wood or a little bakhoor.')}</p>
               <div className="drawer-suggest">
-                {suggestions.map((p) => (
+                {suggestions.map((raw) => {
+                  const p = localizeProduct(raw);
+                  return (
                   <Link key={p.id} to={`/product/${p.id}`} onClick={closeCart} className="mini-card">
                     <span className="mini-thumb" style={{ '--t1': p.tint[0], '--t2': p.tint[1] }}>
                       <ProductArt product={p} />
@@ -68,12 +71,15 @@ export default function Cart() {
                     <span>{p.name}</span>
                     <small>{aed(p.price)}</small>
                   </Link>
-                ))}
+                  );
+                })}
               </div>
             </div>
           ) : (
             <ul className="line-list">
-              {cartItems.map((item) => (
+              {cartItems.map((rawItem) => {
+                const item = { ...localizeProduct(rawItem), quantity: rawItem.quantity };
+                return (
                 <li key={item.id} className="line">
                   <Link
                     to={`/product/${item.id}`}
@@ -89,17 +95,17 @@ export default function Cart() {
                         <h3>{item.name}</h3>
                         <p className="muted">{item.size}</p>
                       </div>
-                      <button type="button" className="icon-btn sm" onClick={() => removeFromCart(item.id)} aria-label={`Remove ${item.name}`}>
+                      <button type="button" className="icon-btn sm" onClick={() => removeFromCart(item.id)} aria-label={t('Remove {name}', { name: item.name })}>
                         <Trash2 size={16} />
                       </button>
                     </div>
                     <div className="line-bottom">
                       <div className="stepper sm">
-                        <button type="button" onClick={() => updateQty(item.id, item.quantity - 1)} aria-label="Decrease quantity">
+                        <button type="button" onClick={() => updateQty(item.id, item.quantity - 1)} aria-label={t('Decrease quantity')}>
                           <Minus size={14} />
                         </button>
                         <span aria-live="polite">{item.quantity}</span>
-                        <button type="button" onClick={() => updateQty(item.id, item.quantity + 1)} aria-label="Increase quantity">
+                        <button type="button" onClick={() => updateQty(item.id, item.quantity + 1)} aria-label={t('Increase quantity')}>
                           <Plus size={14} />
                         </button>
                       </div>
@@ -107,7 +113,8 @@ export default function Cart() {
                     </div>
                   </div>
                 </li>
-              ))}
+                );
+              })}
             </ul>
           )}
         </div>
@@ -115,24 +122,24 @@ export default function Cart() {
         {cartItems.length > 0 && (
           <footer className="drawer-foot">
             <div className="sum-row">
-              <span>Subtotal</span>
+              <span>{t('Subtotal')}</span>
               <strong>{aed(cartTotal)}</strong>
             </div>
             <div className="sum-row vat-row">
-              <span>Includes VAT (5%)</span>
+              <span>{t('Includes VAT (5%)')}</span>
               <span>{aed(cartVat)}</span>
             </div>
             {cartItems.some(isAmbergris) && <LegalNotice compact />}
-            <p className="muted small">All prices include VAT. Delivery is calculated at checkout.</p>
+            <p className="muted small">{t('All prices include VAT. Delivery is calculated at checkout.')}</p>
             <Link to="/checkout" onClick={closeCart} className="btn btn-solid btn-lg btn-block">
-              Checkout <ArrowRight size={18} />
+              {t('Checkout')} <ArrowRight size={18} />
             </Link>
             <button
               type="button"
               className="link-btn"
               onClick={closeCart}
             >
-              Continue shopping
+              {t('Continue shopping')}
             </button>
           </footer>
         )}

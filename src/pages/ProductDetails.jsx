@@ -2,18 +2,21 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Heart, Minus, Plus, Star, Truck, ShieldCheck, Gift, Check, ChevronDown, MapPin } from 'lucide-react';
 import { useCart } from '../context/CartContext';
-import { aed, getProduct, products, TYPE_META } from '../data/products';
+import { aed, getProduct, products, TYPE_META, FREE_SHIPPING, SHIPPING_FEE } from '../data/products';
 import ProductArt from '../components/ProductArt';
 import ProductCard from '../components/ProductCard';
 import LegalNotice from '../components/LegalNotice';
 import { isAmbergris } from '../data/ambergris';
+import { useLang } from '../i18n';
+import { localizeProduct } from '../i18n/products';
 import NotFound from './NotFound';
 
 const level = (v) => (v >= 85 ? 'Exceptional' : v >= 70 ? 'Strong' : 'Moderate');
 
 export default function ProductDetails() {
   const { id } = useParams();
-  const product = getProduct(id);
+  const { t, rich, isAr } = useLang();
+  const product = localizeProduct(getProduct(id));
   const { addToCart, toggleWishlist, wishlist } = useCart();
   const [quantity, setQuantity] = useState(1);
   const [justAdded, setJustAdded] = useState(false);
@@ -42,10 +45,10 @@ export default function ProductDetails() {
   return (
     <>
       <section className="container pdp">
-        <nav className="crumbs" aria-label="Breadcrumb">
-          <Link to="/">Home</Link>
+        <nav className="crumbs" aria-label={t('Breadcrumb')}>
+          <Link to="/">{t('Home')}</Link>
           <span>/</span>
-          <Link to={`/products?type=${encodeURIComponent(product.type)}`}>{product.type}</Link>
+          <Link to={`/products?type=${encodeURIComponent(product.type)}`}>{t(product.type)}</Link>
           <span>/</span>
           <span aria-current="page">{product.name}</span>
         </nav>
@@ -63,9 +66,11 @@ export default function ProductDetails() {
           <div className="pdp-info">
             <span className="eyebrow">{product.family}</span>
             <h1 className="display-md">{product.name}</h1>
-            <p className="pdp-ar" lang="ar" dir="rtl">
-              {product.arabic}
-            </p>
+            {!isAr && (
+              <p className="pdp-ar" lang="ar" dir="rtl">
+                {product.arabic}
+              </p>
+            )}
 
             <div className="pdp-rating">
               <span className="stars" aria-hidden="true">
@@ -74,12 +79,12 @@ export default function ProductDetails() {
                 ))}
               </span>
               <span>
-                {product.rating.toFixed(1)} <span className="muted">({product.reviews} reviews)</span>
+                {product.rating.toFixed(1)} <span className="muted">({t('{n} reviews', { n: product.reviews })})</span>
               </span>
             </div>
 
             <p className="pdp-price">
-              {aed(product.price)} <small className="pdp-vat">incl. 5% VAT</small>
+              {aed(product.price)} <small className="pdp-vat">{t('incl. 5% VAT')}</small>
             </p>
             <p className="pdp-desc">{product.description}</p>
 
@@ -87,21 +92,21 @@ export default function ProductDetails() {
 
             <div className="pdp-buy">
               <div className="stepper">
-                <button type="button" onClick={() => setQuantity((q) => Math.max(1, q - 1))} aria-label="Decrease quantity">
+                <button type="button" onClick={() => setQuantity((q) => Math.max(1, q - 1))} aria-label={t('Decrease quantity')}>
                   <Minus size={16} />
                 </button>
                 <span aria-live="polite">{quantity}</span>
-                <button type="button" onClick={() => setQuantity((q) => q + 1)} aria-label="Increase quantity">
+                <button type="button" onClick={() => setQuantity((q) => q + 1)} aria-label={t('Increase quantity')}>
                   <Plus size={16} />
                 </button>
               </div>
               <button type="button" className={`btn btn-solid btn-lg pdp-add ${justAdded ? 'is-done' : ''}`} onClick={handleAdd}>
                 {justAdded ? (
                   <>
-                    <Check size={18} /> Added to bag
+                    <Check size={18} /> {t('Added to bag')}
                   </>
                 ) : (
-                  <>Add to bag · {aed(product.price * quantity)}</>
+                  <>{t('Add to bag')} · {aed(product.price * quantity)}</>
                 )}
               </button>
               <button
@@ -109,7 +114,7 @@ export default function ProductDetails() {
                 className={`icon-btn bordered ${wished ? 'is-on' : ''}`}
                 onClick={() => toggleWishlist(product.id)}
                 aria-pressed={wished}
-                aria-label={wished ? 'Remove from wishlist' : 'Add to wishlist'}
+                aria-label={wished ? t('Remove from wishlist') : t('Add to wishlist')}
               >
                 <Heart size={20} fill={wished ? 'currentColor' : 'none'} />
               </button>
@@ -117,24 +122,24 @@ export default function ProductDetails() {
 
             <ul className="trust">
               <li>
-                <Truck size={18} /> 48h UAE delivery
+                <Truck size={18} /> {t('48h UAE delivery')}
               </li>
               <li>
-                <Gift size={18} /> 2 free samples
+                <Gift size={18} /> {t('2 free samples')}
               </li>
               <li>
-                <ShieldCheck size={18} /> Authenticity guaranteed
+                <ShieldCheck size={18} /> {t('Authenticity guaranteed')}
               </li>
             </ul>
 
             {product.notes && (
               <div className="pyramid">
-                <h2 className="eyebrow">Scent profile</h2>
+                <h2 className="eyebrow">{t('Scent profile')}</h2>
                 {meta.tiers.map(([key, label, when]) => (
                   <div key={key} className={`tier tier-${key}`}>
                     <div className="tier-label">
-                      <strong>{label}</strong>
-                      <small>{when}</small>
+                      <strong>{t(label)}</strong>
+                      <small>{t(when)}</small>
                     </div>
                     <div className="tier-notes">
                       {product.notes[key].map((n) => (
@@ -155,11 +160,11 @@ export default function ProductDetails() {
                   [meta.meters[1], product.projection],
                 ].map(([name, value]) => (
                   <div className="meter" key={name}>
-                    <span>{name}</span>
+                    <span>{t(name)}</span>
                     <div className="meter-bar">
                       <i style={{ '--v': value / 100 }} />
                     </div>
-                    <b>{level(value)}</b>
+                    <b>{t(level(value))}</b>
                   </div>
                 ))}
               </div>
@@ -178,11 +183,11 @@ export default function ProductDetails() {
               <Link to={product.type === 'Ambergris' ? '/oud#ambergris' : '/oud#origins'} className="origin-link">
                 <MapPin size={18} />
                 <span>
-                  <strong>{product.type === 'Ambergris' ? 'About ambergris' : `About ${product.origin} oud`}</strong>
+                  <strong>{product.type === 'Ambergris' ? t('About ambergris') : t('About {origin} oud', { origin: product.originLabel || product.origin })}</strong>
                   <small>
                     {product.type === 'Ambergris'
-                      ? 'What it is, how it ages and its long history'
-                      : 'How it smells, where it grows and how it differs'}
+                      ? t('What it is, how it ages and its long history')
+                      : t('How it smells, where it grows and how it differs')}
                   </small>
                 </span>
               </Link>
@@ -191,21 +196,21 @@ export default function ProductDetails() {
             <div className="accordion">
               <details open>
                 <summary>
-                  How to use <ChevronDown size={18} />
+                  {t('How to use')} <ChevronDown size={18} />
                 </summary>
-                <p>{meta.howTo}</p>
+                <p>{t(meta.howTo)}</p>
               </details>
               <details>
                 <summary>
-                  Delivery <ChevronDown size={18} />
+                  {t('Delivery')} <ChevronDown size={18} />
                 </summary>
-                <p>Complimentary across the UAE on orders over AED 500, otherwise AED 25. Dispatched within 24 hours and delivered in 48.</p>
+                <p>{t('Complimentary across the UAE on orders over {free}, otherwise {fee}. Dispatched within 24 hours and delivered in 48.', { free: aed(FREE_SHIPPING), fee: aed(SHIPPING_FEE) })}</p>
               </details>
               <details>
                 <summary>
-                  Returns <ChevronDown size={18} />
+                  {t('Returns')} <ChevronDown size={18} />
                 </summary>
-                <p>Unopened items can be returned within 14 days. Opened oils, wood and bakhoor are non-returnable, so try our samples first.</p>
+                <p>{t('Unopened items can be returned within 14 days. Opened oils, wood and bakhoor are non-returnable, so try our samples first.')}</p>
               </details>
             </div>
           </div>
@@ -215,10 +220,8 @@ export default function ProductDetails() {
       <section className="section container">
         <div className="section-head">
           <div>
-            <span className="eyebrow">Continue exploring</span>
-            <h2 className="display-md">
-              You may also <em>love</em>
-            </h2>
+            <span className="eyebrow">{t('Continue exploring')}</span>
+            <h2 className="display-md">{rich(t('You may also *love*'))}</h2>
           </div>
         </div>
         <div className="grid-products">
@@ -234,7 +237,7 @@ export default function ProductDetails() {
           <small>{aed(product.price * quantity)}</small>
         </div>
         <button type="button" className="btn btn-solid" onClick={handleAdd}>
-          {justAdded ? 'Added' : 'Add to bag'}
+          {justAdded ? t('Added') : t('Add to bag')}
         </button>
       </div>
     </>

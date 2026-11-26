@@ -3666,3 +3666,276 @@ fieldset {
   height: 100%;
   object-fit: cover;
 }
+
+/* ---------- Language button ---------- */
+.lang-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 40px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.25s, border-color 0.25s;
+}
+.lang-btn:hover {
+  background: var(--surface);
+  border-color: var(--ink-3);
+}
+@media (max-width: 959px) {
+  .nav-actions .lang-btn {
+    display: none;
+  }
+}
+
+/* ---------- Arabic (right-to-left) ---------- */
+html[lang='ar'] {
+  --f-body: 'IBM Plex Sans Arabic', 'Segoe UI', Tahoma, system-ui, sans-serif;
+  --f-display: 'Amiri', 'IBM Plex Sans Arabic', 'Times New Roman', serif;
+}
+/* tracking and italics break Arabic letter joining, so switch them off */
+html[lang='ar'] *,
+html[lang='ar'] *::before,
+html[lang='ar'] *::after {
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+html[lang='ar'] em {
+  font-style: normal;
+}
+html[lang='ar'] body {
+  line-height: 1.75;
+}
+html[lang='ar'] .display,
+html[lang='ar'] .display-md,
+html[lang='ar'] .display-sm,
+html[lang='ar'] h1,
+html[lang='ar'] h2,
+html[lang='ar'] h3 {
+  font-weight: 700;
+  line-height: 1.3;
+}
+html[lang='ar'] .display {
+  line-height: 1.22;
+}
+html[lang='ar'] .eyebrow {
+  font-weight: 600;
+}
+/* arrows point the reading direction */
+[dir='rtl'] .lucide-arrow-right,
+[dir='rtl'] .lucide-arrow-up-right,
+[dir='rtl'] .lucide-chevron-right {
+  transform: scaleX(-1);
+}
+[dir='rtl'] .link-arrow .lucide-arrow-up-right,
+[dir='rtl'] .bento-arrow .lucide-arrow-up-right {
+  transform: scaleX(-1);
+}
+/* keep numbers, prices and the Latin brand parts reading left to right inside Arabic text */
+[dir='rtl'] .pcard-price,
+[dir='rtl'] .nav-count,
+[dir='rtl'] .step-n,
+[dir='rtl'] input[type='email'],
+[dir='rtl'] input[type='tel'],
+[dir='rtl'] input[inputmode='numeric'] {
+  direction: ltr;
+  unicode-bidi: plaintext;
+}
+[dir='rtl'] input[type='email']::placeholder,
+[dir='rtl'] input[type='tel']::placeholder,
+[dir='rtl'] input[inputmode='numeric']::placeholder {
+  text-align: right;
+}
+
+/* let both checkout columns shrink instead of overflowing the page */
+.checkout-grid {
+  grid-template-columns: minmax(0, 1fr);
+}
+.checkout-grid > * {
+  min-width: 0;
+}
+@media (min-width: 960px) {
+  .checkout-grid {
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  }
+}
+
+/* two-column field rows must be able to shrink with their panel */
+.grid-2 {
+  grid-template-columns: minmax(0, 1fr);
+}
+.grid-2 > * {
+  min-width: 0;
+}
+@media (min-width: 560px) {
+  .grid-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.field input,
+.field select {
+  width: 100%;
+  min-width: 0;
+}
+
+/* ---------- Right-to-left mirroring ---------- */
+[dir='rtl'] .skip {
+  left: auto;
+  right: 16px;
+}
+[dir='rtl'] .btn:hover svg {
+  transform: translateX(-3px);
+}
+[dir='rtl'] .btn:hover svg.lucide-arrow-right,
+[dir='rtl'] .btn:hover svg.lucide-arrow-up-right {
+  transform: scaleX(-1) translateX(3px);
+}
+[dir='rtl'] .link-arrow::after {
+  left: 26px;
+  right: 0;
+}
+[dir='rtl'] .badge {
+  left: auto;
+  right: 16px;
+}
+[dir='rtl'] .pcard-wish {
+  right: auto;
+  left: 10px;
+}
+[dir='rtl'] .nav-bag {
+  margin-left: 0;
+  margin-right: 6px;
+  padding: 0 16px 0 8px;
+}
+[dir='rtl'] .logo-sub > span {
+  margin-right: 0;
+}
+[dir='rtl'] .search-field {
+  padding: 8px 18px 8px 8px;
+}
+[dir='rtl'] .hero-seal {
+  right: auto;
+  left: -2%;
+}
+[dir='rtl'] .float-notes {
+  left: auto;
+  right: -2%;
+}
+[dir='rtl'] .float-rate {
+  right: auto;
+  left: -1%;
+}
+@media (max-width: 520px) {
+  [dir='rtl'] .float-notes {
+    left: auto;
+    right: 0;
+  }
+  [dir='rtl'] .float-rate {
+    right: auto;
+    left: 0;
+  }
+}
+@media (max-width: 599px) {
+  [dir='rtl'] .nav-bag {
+    margin-right: 2px;
+    padding: 0 12px 0 5px;
+  }
+}
+[dir='rtl'] .marquee-track {
+  direction: ltr;
+}
+[dir='rtl'] .bento-arrow {
+  left: auto;
+  right: 20px;
+}
+[dir='rtl'] .story-badge {
+  right: auto;
+  left: -4%;
+}
+[dir='rtl'] .seg-legend strong,
+[dir='rtl'] .pdp-vat {
+  margin-left: 0;
+  margin-right: 6px;
+}
+[dir='rtl'] .tab-count {
+  margin-left: 0;
+  margin-right: 8px;
+}
+[dir='rtl'] .pdp-size {
+  left: auto;
+  right: 16px;
+}
+[dir='rtl'] .meter b {
+  text-align: left;
+}
+[dir='rtl'] .buybar {
+  padding: 10px 20px 10px 10px;
+}
+[dir='rtl'] .drawer-panel {
+  right: auto;
+  left: 8px;
+  transform: translateX(calc(-100% - 24px));
+}
+[dir='rtl'] .drawer.is-open .drawer-panel {
+  transform: none;
+}
+[dir='rtl'] .drawer-head {
+  padding: 18px 26px 10px 16px;
+}
+[dir='rtl'] .mini-card,
+[dir='rtl'] .confirm-card {
+  text-align: right;
+}
+[dir='rtl'] .sum-thumb b {
+  right: auto;
+  left: -6px;
+}
+[dir='rtl'] .account-out {
+  margin-left: 0;
+  margin-right: auto;
+}
+[dir='rtl'] .table th {
+  text-align: right;
+}
+[dir='rtl'] .table .right {
+  text-align: left;
+}
+[dir='rtl'] .footer-cols a:hover,
+[dir='rtl'] .origin-link:hover {
+  transform: translateX(-4px);
+}
+[dir='rtl'] .spec dd {
+  text-align: left;
+}
+[dir='rtl'] .origin-chip {
+  left: auto;
+  right: 12px;
+}
+[dir='rtl'] .select select {
+  padding: 0 16px 0 38px;
+  background-position: left 14px center;
+}
+
+/* Arabic letters need more vertical room than the tight Latin wordmark line */
+html[lang='ar'] .footer-word {
+  margin-inline: 0;
+  font-weight: 700;
+  font-size: clamp(2.4rem, 10vw, 8.5rem);
+  line-height: 1.6;
+  padding-block: 0.05em 0.1em;
+  background: linear-gradient(180deg, var(--gold-2) 0%, var(--gold-2) 35%, transparent 95%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+@media (max-width: 599px) {
+  html[lang='ar'] .footer-word {
+    font-size: 11vw;
+  }
+}

@@ -4,10 +4,12 @@ import { ArrowRight, Check, CreditCard, Smartphone, Banknote, Lock } from 'lucid
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { saveOrder } from '../data/orders';
-import { aed, round2, vatIn, FREE_SHIPPING, SHIPPING_FEE } from '../data/products';
+import { aed, round2, vatIn, getProduct, FREE_SHIPPING, SHIPPING_FEE } from '../data/products';
 import ProductArt from '../components/ProductArt';
 import LegalNotice from '../components/LegalNotice';
 import { isAmbergris, AMBERGRIS_LEGAL } from '../data/ambergris';
+import { useLang } from '../i18n';
+import { localizeProduct } from '../i18n/products';
 
 const EMIRATES = ['Dubai', 'Abu Dhabi', 'Sharjah', 'Ajman', 'Ras Al Khaimah', 'Fujairah', 'Umm Al Quwain'];
 
@@ -39,6 +41,7 @@ function Field({ label, id, children, className = '' }) {
 }
 
 export default function Checkout() {
+  const { t, rich, isAr } = useLang();
   const { cartItems, cartTotal, clearCart } = useCart();
   const { user } = useAuth();
   const [pay, setPay] = useState('card');
@@ -105,37 +108,35 @@ export default function Checkout() {
         <div className="confirm-mark">
           <Check size={34} />
         </div>
-        <span className="eyebrow">Order {placed.id}</span>
+        <span className="eyebrow">{t('Order {id}', { id: placed.id })}</span>
         <h1 className="display-md">
-          Shukran, {placed.shipTo.name.split(' ')[0] || 'friend'}. <em>Your order is placed.</em>
+          {rich(t('Shukran, {name}. *Your order is placed.*', { name: placed.shipTo.name.split(' ')[0] || t('friend') }))}
         </h1>
-        <p className="lede">
-          We will confirm by email and dispatch within 24 hours. This is a demo store, so no payment was taken.
-        </p>
+        <p className="lede">{t('We will confirm by email and dispatch within 24 hours. This is a demo store, so no payment was taken.')}</p>
         <div className="confirm-card">
           {placed.items.map((i) => (
             <div key={i.id} className="sum-row">
               <span>
-                {i.name} × {i.quantity}
+                {localizeProduct(getProduct(i.id))?.name || i.name} × {i.quantity}
               </span>
               <span>{aed(i.price * i.quantity)}</span>
             </div>
           ))}
           <div className="sum-row total">
-            <span>Total paid</span>
+            <span>{t('Total paid')}</span>
             <strong>{aed(placed.total)}</strong>
           </div>
           <div className="sum-row vat-row">
-            <span>Includes VAT (5%)</span>
+            <span>{t('Includes VAT (5%)')}</span>
             <span>{aed(placed.vat)}</span>
           </div>
         </div>
         <div className="hero-cta">
           <Link to="/profile" className="btn btn-solid btn-lg">
-            View my orders
+            {t('View my orders')}
           </Link>
           <Link to="/products" className="btn btn-ghost btn-lg">
-            Keep browsing
+            {t('Keep browsing')}
           </Link>
         </div>
       </section>
@@ -145,13 +146,11 @@ export default function Checkout() {
   if (cartItems.length === 0) {
     return (
       <section className="container notfound">
-        <span className="eyebrow">Checkout</span>
-        <h1 className="display-md">
-          Your bag is <em>empty.</em>
-        </h1>
-        <p className="lede">Add a fragrance to your bag and it will appear here.</p>
+        <span className="eyebrow">{t('Checkout')}</span>
+        <h1 className="display-md">{rich(t('Your bag is *empty.*'))}</h1>
+        <p className="lede">{t('Add a fragrance to your bag and it will appear here.')}</p>
         <Link to="/products" className="btn btn-solid btn-lg">
-          Browse fragrances <ArrowRight size={18} />
+          {t('Browse fragrances')} <ArrowRight size={18} />
         </Link>
       </section>
     );
@@ -160,23 +159,21 @@ export default function Checkout() {
   return (
     <section className="container checkout">
       <header className="checkout-head">
-        <span className="eyebrow">Secure checkout</span>
-        <h1 className="display-md">
-          Almost <em>yours</em>
-        </h1>
+        <span className="eyebrow">{t('Secure checkout')}</span>
+        <h1 className="display-md">{rich(t('Almost *yours*'))}</h1>
       </header>
 
       <form className="checkout-grid" onSubmit={onSubmit}>
         <div className="checkout-forms">
           <fieldset className="panel">
             <legend>
-              <span className="step">1</span> Contact
+              <span className="step">1</span> {t('Contact')}
             </legend>
             <div className="grid-2">
-              <Field label="Email" id="email">
+              <Field label={t('Email')} id="email">
                 <input id="email" type="email" required autoComplete="email" value={form.email} onChange={set('email')} placeholder="you@example.com" />
               </Field>
-              <Field label="Mobile" id="phone">
+              <Field label={t('Mobile')} id="phone">
                 <input id="phone" type="tel" required autoComplete="tel" value={form.phone} onChange={set('phone')} placeholder="+971 50 000 0000" />
               </Field>
             </div>
@@ -184,27 +181,27 @@ export default function Checkout() {
 
           <fieldset className="panel">
             <legend>
-              <span className="step">2</span> Delivery
+              <span className="step">2</span> {t('Delivery')}
             </legend>
             <div className="grid-2">
-              <Field label="First name" id="first">
+              <Field label={t('First name')} id="first">
                 <input id="first" required autoComplete="given-name" value={form.first} onChange={set('first')} />
               </Field>
-              <Field label="Last name" id="last">
+              <Field label={t('Last name')} id="last">
                 <input id="last" required autoComplete="family-name" value={form.last} onChange={set('last')} />
               </Field>
             </div>
-            <Field label="Address" id="address">
-              <input id="address" required autoComplete="street-address" value={form.address} onChange={set('address')} placeholder="Villa or apartment, street, area" />
+            <Field label={t('Address')} id="address">
+              <input id="address" required autoComplete="street-address" value={form.address} onChange={set('address')} placeholder={t('Villa or apartment, street, area')} />
             </Field>
             <div className="grid-2">
-              <Field label="City / area" id="city">
+              <Field label={t('City / area')} id="city">
                 <input id="city" required autoComplete="address-level2" value={form.city} onChange={set('city')} />
               </Field>
-              <Field label="Emirate" id="emirate">
+              <Field label={t('Emirate')} id="emirate">
                 <select id="emirate" value={form.emirate} onChange={set('emirate')}>
                   {EMIRATES.map((e) => (
-                    <option key={e}>{e}</option>
+                    <option key={e} value={e}>{t(e)}</option>
                   ))}
                 </select>
               </Field>
@@ -213,45 +210,47 @@ export default function Checkout() {
 
           <fieldset className="panel">
             <legend>
-              <span className="step">3</span> Payment
+              <span className="step">3</span> {t('Payment')}
             </legend>
-            <div className="pay-options" role="radiogroup" aria-label="Payment method">
+            <div className="pay-options" role="radiogroup" aria-label={t('Payment method')}>
               {PAYMENTS.map(({ id, label, icon: Icon }) => (
                 <label key={id} className={`pay-option ${pay === id ? 'is-active' : ''}`}>
                   <input type="radio" name="pay" value={id} checked={pay === id} onChange={() => setPay(id)} />
                   <Icon size={20} />
-                  <span>{label}</span>
+                  <span>{t(label)}</span>
                 </label>
               ))}
             </div>
 
             {pay === 'card' && (
               <div className="pay-card">
-                <Field label="Card number" id="cc-number">
+                <Field label={t('Card number')} id="cc-number">
                   <input id="cc-number" inputMode="numeric" autoComplete="cc-number" required value={form.card} onChange={set('card')} placeholder="0000 0000 0000 0000" />
                 </Field>
                 <div className="grid-2">
-                  <Field label="Expiry" id="cc-exp">
+                  <Field label={t('Expiry')} id="cc-exp">
                     <input id="cc-exp" inputMode="numeric" autoComplete="cc-exp" required value={form.expiry} onChange={set('expiry')} placeholder="MM/YY" />
                   </Field>
-                  <Field label="CVC" id="cc-csc">
+                  <Field label={t('CVC')} id="cc-csc">
                     <input id="cc-csc" inputMode="numeric" autoComplete="cc-csc" required value={form.cvc} onChange={set('cvc')} placeholder="123" />
                   </Field>
                 </div>
                 <p className="muted small">
-                  <Lock size={13} /> Demo store: card details are never stored or sent anywhere.
+                  <Lock size={13} /> {t('Demo store: card details are never stored or sent anywhere.')}
                 </p>
               </div>
             )}
-            {pay === 'apple' && <p className="muted pay-note">You will confirm with Apple Pay on your device once payments are connected.</p>}
-            {pay === 'cod' && <p className="muted pay-note">Pay in cash when your order arrives. Please keep the exact amount ready.</p>}
+            {pay === 'apple' && <p className="muted pay-note">{t('You will confirm with Apple Pay on your device once payments are connected.')}</p>}
+            {pay === 'cod' && <p className="muted pay-note">{t('Pay in cash when your order arrives. Please keep the exact amount ready.')}</p>}
           </fieldset>
         </div>
 
         <aside className="summary">
-          <h2 className="eyebrow">Order summary</h2>
+          <h2 className="eyebrow">{t('Order summary')}</h2>
           <ul className="sum-lines">
-            {cartItems.map((i) => (
+            {cartItems.map((raw) => {
+              const i = { ...localizeProduct(raw), quantity: raw.quantity };
+              return (
               <li key={i.id}>
                 <span className="sum-thumb" style={{ '--t1': i.tint[0], '--t2': i.tint[1] }}>
                   <ProductArt product={i} />
@@ -263,22 +262,23 @@ export default function Checkout() {
                 </span>
                 <span>{aed(i.price * i.quantity)}</span>
               </li>
-            ))}
+              );
+            })}
           </ul>
           <div className="sum-row">
-            <span>Subtotal</span>
+            <span>{t('Subtotal')}</span>
             <span>{aed(cartTotal)}</span>
           </div>
           <div className="sum-row">
-            <span>Delivery</span>
-            <span>{shipping ? aed(shipping) : 'Complimentary'}</span>
+            <span>{t('Delivery')}</span>
+            <span>{shipping ? aed(shipping) : t('Complimentary')}</span>
           </div>
           <div className="sum-row total">
-            <span>Total</span>
+            <span>{t('Total')}</span>
             <strong>{aed(total)}</strong>
           </div>
           <div className="sum-row vat-row">
-            <span>Includes VAT (5%)</span>
+            <span>{t('Includes VAT (5%)')}</span>
             <span>{aed(vat)}</span>
           </div>
           {hasAmbergris && (
@@ -286,12 +286,12 @@ export default function Checkout() {
               <LegalNotice />
               <label className="legal-check">
                 <input type="checkbox" required checked={ambergrisOk} onChange={(e) => setAmbergrisOk(e.target.checked)} />
-                <span>{AMBERGRIS_LEGAL.confirm}</span>
+                <span>{t(AMBERGRIS_LEGAL.confirm)}</span>
               </label>
             </div>
           )}
           <button type="submit" className="btn btn-solid btn-lg btn-block" disabled={hasAmbergris && !ambergrisOk}>
-            Place order · {aed(total)}
+            {t('Place order')} · {aed(total)}
           </button>
         </aside>
       </form>

@@ -1,3 +1,5 @@
+import { getLang } from '../i18n/lang';
+
 export const FREE_SHIPPING = 500;
 export const SHIPPING_FEE = 25;
 export const VAT_RATE = 0.05;
@@ -730,10 +732,12 @@ export const collections = [
 
 export const getProduct = (id) => products.find((p) => p.id === String(id));
 
-export const aed = (n) =>
-  'AED ' +
-  new Intl.NumberFormat('en-AE', {
+export const aed = (n) => {
+  const ar = getLang() === 'ar';
+  const num = new Intl.NumberFormat(ar ? 'ar-AE-u-nu-latn' : 'en-AE', {
     minimumFractionDigits: Number.isInteger(n) ? 0 : 2,
     maximumFractionDigits: 2,
   }).format(n);
+  return ar ? `${num} د.إ` : `AED ${num}`;
+};
 

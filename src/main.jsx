@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom'
 import App from './App.jsx'
 import './index.css'
 import './theme'
+import './i18n/lang'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
